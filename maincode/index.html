@@ -28,8 +28,8 @@
                 <option value="standard2">DVB-S2</option>
             </select>
             <div>
-                <label for="inputFrec"></label>
-                <input type="text" id="inputFrec" placeholder="Частота вещания:">
+                <label for="inputFrec">Частота вещания:</label>
+                <input type="number" id="inputFrec">
             </div>
             <select id="dataPolarization" class="styled-dropdown">
                 <option value="" disabled selected hidden> Поляризация </option>
@@ -54,20 +54,20 @@
         </div>
         <div id="secondCalculation">
             <div>
-                <label for="inputLat"></label>
-                <input type="text" id="inputLat" placeholder="Широта">
+                <label for="inputLat">Широта:</label><br>
+                <input type="number" id="inputLat">
             </div>
             <div>
-                <label for="inputLng"></label>
-                <input type="text" id="inputLng" placeholder="Долготу">
+                <label for="inputLng">Долгота:</label><br>
+                <input type="number" id="inputLng">
             </div>
             <div>
                 <label for="inputHeight">Высота подъёма:</label><br>
-                <input type="text" id="inputHeight">
+                <input type="number" id="inputHeight">
             </div>
             <div>
                 <label for="inputAzim">Азимут направления главного лепестка:</label><br>
-                <input type="text" id="inputAzim">
+                <input type="number" id="inputAzim">
             </div>
             <select id="dataStand" class="styled-dropdown">
                 <option value="" disabled selected hidden> Стандарт вещания </option>
@@ -75,8 +75,8 @@
                 <option value="standard2">DVB-S2</option>
             </select>
             <div>
-                <label for="inputFrec1"></label>
-                <input type="text" id="inputFrec1" placeholder="Частота вещания:">
+                <label for="inputFrec1">Частота вещания: </label><br>
+                <input type="number" id="inputFrec1">
             </div>
             <div>
                 <select id="dataPol" class="styled-dropdown">
@@ -95,17 +95,19 @@
                 </select>
             </div>
             <div>
-                <label for="inputPower">Мощность передатчика:</label>
-                <input type="text" id="inputPower" value="2">
+                <label for="inputPower">Мощность передатчика:</label><br>
+                <input type="number" id="inputPower" value="2" min="0" max="2000" required>
+                <span></span>
             </div>
             <div>
                 <label for="inputAntennaGain">Коэффициент усиления антенны:</label>
-                <input type="text" id="inputAntennaGain" value="20">
+                <input type="number" id="inputAntennaGain" value="20">
             </div>
 
             <div>
-                <label for="inputWidth">Ширина главного лепестка:</label>
-                <input type="text" id="inputWidth" value="18">
+                <label for="inputWidth">Ширина главного лепестка:</label><br>
+                <input type="number" id="inputWidth" value="18" min="0" max="360" required>
+                <span></span>
             </div>
         </div>
     </div>
