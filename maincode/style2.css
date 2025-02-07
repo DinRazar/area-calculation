@@ -1,0 +1,51 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+#mainCalculation {
+    display: flex;
+    gap: 15px;
+    cursor: pointer;
+}
+
+#mapAndCalc {
+    display: flex;
+    gap: 15px;
+    cursor: pointer;
+}
+
+#map {
+    height: 80vh;
+    width: 100%;
+    border-radius: 5px;
+    margin: 20px 0;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.button-group {
+    position: absolute;
+    top: 0.85%;
+    left: 5%;
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.button-group button {
+    margin: 5px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    transition: background-color 0.3s;
+}
+
+.button-group button.active {
+    background-color: #007bff;
+    color: white;
+}

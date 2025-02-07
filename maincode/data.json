@@ -1,0 +1,20 @@
+{
+  "standard": "standard2",
+  "speed": "speed12",
+  "modulation": "modulation4",
+  "polarization": "Polarization1",
+  "frequency1": "789",
+  "frequency2": "789",
+  "satelliteLongitude": "62.0",
+  "latitude": "55.7397",
+  "longitude": "37.8252",
+  "Power": "2",
+  "AntennaGain": "20",
+  "Width": "18",
+  "Hight": "53",
+  "Azimuth": "335",
+  "Pol": "Polarization3",
+  "Stand": "standard2",
+  "Sp": "sp13",
+  "Mod": "mod4"
+}
