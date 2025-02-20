@@ -161,6 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dataStandSelect = document.getElementById('dataStand');
     const dataSpSelect = document.getElementById('dataSp');
     const dataModSelect = document.getElementById('dataMod');
+    const inputHeightSeaLevel = document.getElementById('inputHeightSeaLevel')
 
     // Объект для хранения выбранных значений
     let selectedValues = {
@@ -176,6 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
         Power: '',
         AntennaGain: '',
         Width: '',
+        HeightSeaLevel: '',
         Hight: '',
         Azimuth: '',
         Pol: '',
@@ -198,6 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedValues.AntennaGain = inputAntennaGain.value;
         selectedValues.Width = inputWidth.value;
         selectedValues.Hight = inputHeight.value;
+        selectedValues.HeightSeaLevel = inputHeightSeaLevel.value;
         selectedValues.Azimuth = inputAzim.value;
         selectedValues.Pol = dataPolSelect.value;
         selectedValues.Stand = dataStandSelect.value;
@@ -243,7 +246,8 @@ document.addEventListener('DOMContentLoaded', () => {
     dataPolSelect.addEventListener('input', updateSelectedValues);
     dataStandSelect.addEventListener('change', updateSelectedValues);
     dataSpSelect.addEventListener('change', updateSelectedValues);
-    dataModSelect.addEventListener('change', updateSelectedValues)
+    dataModSelect.addEventListener('change', updateSelectedValues);
+    inputHeightSeaLevel.addEventListener('input', updateSelectedValues)
 
 
 
@@ -263,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
             !selectedValues.Width || !selectedValues.Hight ||
             !selectedValues.Azimuth || !selectedValues.Pol ||
             !selectedValues.Stand || !selectedValues.Sp ||
-            !selectedValues.Mod) {
+            !selectedValues.Mod || !selectedValues.HeightSeaLevel) {
             alert("Пожалуйста, заполните все обязательные поля.");
             return; // Прерываем выполнение функции, если есть незаполненные поля
         }
@@ -278,10 +282,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // Обновление значений в selectedValues, если координаты не совпадают
         const inputLatValue = parseFloat(inputLat.value).toFixed(4);
         const inputLngValue = parseFloat(inputLng.value).toFixed(4);
+        const inputHetSeLevel = parseFloat(inputHeightSeaLevel.value);
 
-        if (inputLatValue !== selectedValues.latitude || inputLngValue !== selectedValues.longitude) {
+        if (inputLatValue !== selectedValues.latitude ||
+            inputLngValue !== selectedValues.longitude ||
+            inputHetSeLevel !== selectedValues.HeightSeaLevel) {
             selectedValues.latitude = inputLatValue; // Обновляем широту
             selectedValues.longitude = inputLngValue; // Обновляем долготу
+            selectedValues.HeightSeaLevel = inputHetSeLevel;
 
         }
 
