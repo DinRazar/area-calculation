@@ -1,78 +1,130 @@
-* {
-    box-sizing: border-box;
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
     margin: 0;
-    padding: 0;
+    padding: 20px;
+}
+
+#controls,
+#mapAndCalc {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
 }
 
 #mainCalculation {
     display: flex;
+    /* Используем flexbox для расположения элементов в строку */
+    flex-wrap: nowrap;
+    /* Элементы не будут переноситься на новую строку */
     gap: 15px;
+    /* Промежуток между элементами */
+}
+
+.styled-dropdown {
+    appearance: none;
+    /* Убираем стандартный стиль */
+    background-size: 12px;
+    /* Размер иконки */
+    padding-right: 20px;
+    /* Отступ для иконки */
+    padding: 10px;
+    /* Отступ для текста */
+    border: 1px solid #ccc;
+    /* Граница */
+    border-radius: 4px;
+    /* Скругление углов */
+    display: inline-block;
+    /* Изменяем на inline-block */
+    min-width: 150px;
+    /* Минимальная ширина, если нужно */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 25vh;
+}
+
+label {
+    margin: 0;
+    /* Убираем все отступы */
+    margin-bottom: 5px;
+    /* Отступ между заголовком и инпутом */
+    font-weight: bold;
+    font-size: 14px;
+}
+
+input[type="number"],
+select {
+    width: 100%;
+    /* Задаем ширину 100% */
+    padding: 10px;
+    /* Отступы внутри инпутов */
+    margin-bottom: 10px;
+    /* Отступ между элементами */
+    border: 1px solid #ccc;
+    /* Граница */
+    border-radius: 4px;
+    /* Скругление углов */
+    box-sizing: border-box;
+    /* Учитываем отступы и границы в ширине */
+    height: 40px;
+    /* Задаем одинаковую высоту для всех элементов */
+}
+
+button {
+    flex: 0 0 auto;
+    /* Кнопка не будет растягиваться */
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+input[type="number"]:focus,
+select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
 }
 
 #mapAndCalc {
     display: flex;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    flex-wrap: nowrap;
     gap: 15px;
-    cursor: pointer;
 }
 
 #map {
-    height: 80vh;
-    width: 100%;
-    border-radius: 5px;
-    margin: 20px 0;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 150vh;
+    height: 70vh;
+    background: #eaeaea;
+    border-radius: 4px;
+    margin-bottom: 20px;
 }
 
-.button-group {
-    position: absolute;
-    top: 0.85%;
-    left: 5%;
-    background: white;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-}
-
-.button-group button {
-    margin: 5px;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: #f0f0f0;
-    transition: background-color 0.3s;
-}
-
-.button-group button.active {
-    background-color: #007bff;
-    color: white;
-}
-
-input[type="number"]:invalid+span:after {
-    content: '✖';
-    padding-left: 5px;
-    /* color: red; */
-}
-
-input[type="number"]:valid+span:after {
-    content: '✓';
-    padding-left: 5px;
-    /* color: green; */
-}
-
-input[type="number"] {
-    -moz-appearance: textfield;
-    -webkit-appearance: textfield;
-    appearance: textfield;
-}
-
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    display: none;
-}
-
-input[type='number'] {
-    width: 80px;
+@media (max-width: 600px) {
+    .button-group {
+        flex-direction: column;
+    }
 }

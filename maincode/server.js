@@ -23,9 +23,28 @@ app.get('/data', (req, res) => {
 
 });
 
+// Эндпоинт для получения высоты
+app.post('/api/getElevation', (req, res) => {
+    const { latitude, longitude } = req.body;
+
+    // Запуск Python-скрипта с координатами
+    const pythonProcess = spawn('python3', ['tiff.py', latitude, longitude]);
+
+    pythonProcess.stdout.on('data', (data) => {
+        const elevation = parseFloat(data.toString());
+        res.json({ elevation });
+    });
+
+    pythonProcess.stderr.on('data', (data) => {
+        console.error(`Ошибка: ${data}`);
+        res.status(500).send('Ошибка при обработке запроса');
+    });
+});
+
+
 app.post('/save', (req, res) => {
     const data = req.body; // Получаем данные из запроса
-    // console.log('Полученные данные:', data);
+    console.log('Полученные данные:', data);
 
     fs.writeFileSync('data.json', JSON.stringify(data, null, 2)); // Сохранения в файл json
 

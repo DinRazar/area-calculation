@@ -4,212 +4,24 @@
     padding: 0;
 }
 
-html,
-body {
-    height: 100%;
-    font-family: Arial, sans-serif;
-}
-
-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* justify-content: flex-end; */
-    padding: 20px;
-}
-
-#controls {
-    width: 100%;
-    max-width: 90vw;
-    /* Ограничиваем максимальную ширину контейнера */
-    margin-bottom: 20px;
-    background: rgba(255, 255, 255, 0.9);
-    /* padding: 20px; */
-    border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(255, 255, 255, 0.1);
-}
-
-.dataDropdown {
-    width: 400px;
-    font-family: Arial, sans-serif;
-}
-
-.styled-dropdown {
-    width: 400px;
-    padding: 10px 15px;
-    font-size: 16px;
-    appearance: none;
-    cursor: pointer;
-    transition: border-color 0.3s ease-in-out;
-    font-family: inherit !important;
-    font-weight: bold;
-    border-radius: 5px;
-    box-shadow: 0px 2px 4px rgba(110, 106, 106, 0.1);
-    border: 2px solid #000;
-    background: #f0f0f0;
-}
-
-.styled-dropdown:focus {
-    border-color: rgb(0, 0, 0);
-    outline: none;
-    font-family: Arial, sans-serif;
-}
-
-#map {
-    height: 80vh;
-    /* Высота карты */
-    width: 100%;
-    /* Ширина карты */
-    border-radius: 5px;
-    margin: 20px 0;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-#heightInputContainer {
-    margin-top: 10px;
-}
-
-#heightInput {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-#confirmHeightButton {
-    margin-top: 10px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background: #5e31b3;
-    color: #fff;
-    cursor: pointer;
-    transition: background 0.3s;
-    max-width: 150px;
-    /* Устанавливаем максимальную ширину для кнопки */
-    flex-shrink: 0;
-    /* Запрещаем кнопке сжиматься */
-}
-
-#confirmHeightButton:hover {
-    background: #000000;
-    /* Темнее при наведении */
-}
-
-#addPointButton {
-    margin-top: 10px;
-    font-weight: bold;
-    font-size: 15px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    border-radius: 5px;
-    padding: 10px;
-    cursor: pointer;
-    /* width: calc(20% - 10px); */
-    background: #f0f0f0;
-    font-family: inherit !important;
-    align-items: center;
-    box-shadow: 0px 2px 4px rgba(110, 106, 106, 0.1);
-    /* Тень */
-}
-
-#addPointButton:hover {
-    background: #e0e0e0;
-    /* Цвет фона при наведении */
-}
-
-#manualInputButton {
-    margin-top: 10px;
-    font-weight: bold;
-    font-size: 15px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    border-radius: 5px;
-    padding: 10px;
-    cursor: pointer;
-    /* width: calc(20% - 10px); */
-    background: #f0f0f0;
-    font-family: inherit !important;
-    align-items: center;
-    box-shadow: 0px 2px 4px rgba(110, 106, 106, 0.1);
-    /* Тень */
-}
-
-#manualInputButton:hover {
-    background: #e0e0e0;
-    /* Цвет фона при наведении */
-}
-
-#results {
-    margin-top: 10px;
-    font-weight: bold;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-}
-
-#results1 {
-    margin-top: 10px;
-    font-weight: bold;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-}
-
-#results2 {
-    margin-top: 10px;
-    font-weight: bold;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-}
-
-#manualbtn {
+#mainCalculation {
     display: flex;
     gap: 15px;
     cursor: pointer;
 }
 
-.result-item {
-    margin: 5px;
-    padding: 10px;
-    background: #f0f0f0;
+#mapAndCalc {
+    display: flex;
+    gap: 15px;
+    cursor: pointer;
+}
+
+#map {
+    height: 80vh;
+    width: 100%;
     border-radius: 5px;
-    width: calc(45% - 10px);
-    /* Ширина с учётом отступов */
-    box-shadow: 0px 2px 4px rgba(110, 106, 106, 0.1);
-}
-
-.leaflet-control-layers {
-    background: white;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
-}
-
-#modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 20px;
-    border: 1px solid black;
-    z-index: 1000;
-}
-
-#autoDetectionButton {
-    cursor: pointer;
-}
-
-#submitCoordinates {
-    cursor: pointer;
-}
-
-#closeModal1 {
-    cursor: pointer;
+    margin: 20px 0;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .button-group {
@@ -230,13 +42,37 @@ body {
     border-radius: 5px;
     cursor: pointer;
     background-color: #f0f0f0;
-    /* Цвет по умолчанию */
     transition: background-color 0.3s;
 }
 
 .button-group button.active {
     background-color: #007bff;
-    /* Цвет для активной кнопки */
     color: white;
-    /* Цвет текста для активной кнопки */
+}
+
+input[type="number"]:invalid+span:after {
+    content: '✖';
+    padding-left: 5px;
+    /* color: red; */
+}
+
+input[type="number"]:valid+span:after {
+    content: '✓';
+    padding-left: 5px;
+    /* color: green; */
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+    -webkit-appearance: textfield;
+    appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    display: none;
+}
+
+input[type='number'] {
+    width: 80px;
 }

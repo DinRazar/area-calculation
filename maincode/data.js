@@ -5,38 +5,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Опции для кодовой скорости
     const speedOptions = {
-        standard1: [
-            { value: 'speed1', text: '1/2' },
-            { value: 'speed2', text: '2/3' },
-            { value: 'speed3', text: '3/4' },
-            { value: 'speed4', text: '5/6' },
-            { value: 'speed5', text: '7/8' },
+        dvbs: [
+            { value: '1/2', text: '1/2' },
+            { value: '2/3', text: '2/3' },
+            { value: '3/4', text: '3/4' },
+            { value: '5/6', text: '5/6' },
+            { value: '7/8', text: '7/8' },
         ],
-        standard2: [
-            { value: 'speed6', text: '1/4' },
-            { value: 'speed7', text: '1/3' },
-            { value: 'speed8', text: '2/5' },
-            { value: 'speed9', text: '1/2' },
-            { value: 'speed10', text: '3/5' },
-            { value: 'speed11', text: '2/3' },
-            { value: 'speed12', text: '3/4' },
-            { value: 'speed13', text: '4/5' },
-            { value: 'speed14', text: '5/6' },
-            { value: 'speed15', text: '8/9' },
-            { value: 'speed16', text: '9/10' },
+        dvbs2: [
+            { value: '1/4', text: '1/4' },
+            { value: '1/3', text: '1/3' },
+            { value: '2/5', text: '2/5' },
+            { value: '1/2', text: '1/2' },
+            { value: '3/5', text: '3/5' },
+            { value: '2/3', text: '2/3' },
+            { value: '3/4', text: '3/4' },
+            { value: '4/5', text: '4/5' },
+            { value: '5/6', text: '5/6' },
+            { value: '8/9', text: '8/9' },
+            { value: '9/10', text: '9/10' },
         ],
     };
 
     // Опции для типа модуляции
     const modulationOptions = {
-        standard1: [
-            { value: 'modulation1', text: 'QPSK' }
+        dvbs: [
+            { value: 'QPSK', text: 'QPSK' }
         ],
-        standard2: [
-            { value: 'modulation2', text: 'QPSK' },
-            { value: 'modulation3', text: '8-PSK' },
-            { value: 'modulation4', text: '16APSK' },
-            { value: 'modulation5', text: '32APSK' },
+        dvbs2: [
+            { value: 'QPSK', text: 'QPSK' },
+            { value: '8-PSK', text: '8-PSK' },
+            { value: '16-APSK', text: '16-APSK' },
+            { value: '32-APSK', text: '32-APSK' },
         ],
     };
 
@@ -73,37 +73,37 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
     const dataStandSelect = document.getElementById('dataStand');
     const dataSpSelect = document.getElementById('dataSp');
-    const dataModSelect = document.getElementById('dataMod')
+    const dataModSelect = document.getElementById('dataMod');
 
     const speedOption1 = {
-        standard1: [
-            { value: 'sp1', text: '1/2' },
-            { value: 'sp2', text: '2/3' },
-            { value: 'sp3', text: '3/4' },
-            { value: 'sp4', text: '5/6' },
-            { value: 'sp5', text: '7/8' },
+        dvbs: [
+            { value: '1/2', text: '1/2' },
+            { value: '2/3', text: '2/3' },
+            { value: '3/4', text: '3/4' },
+            { value: '5/6', text: '5/6' },
+            { value: '7/8', text: '7/8' },
         ],
-        standard2: [
-            { value: 'sp6', text: '1/4' },
-            { value: 'sp7', text: '1/3' },
-            { value: 'sp8', text: '2/5' },
-            { value: 'sp9', text: '1/2' },
-            { value: 'sp10', text: '3/5' },
-            { value: 'sp11', text: '2/3' },
-            { value: 'sp12', text: '3/4' },
-            { value: 'sp13', text: '4/5' },
+        dvbs2: [
+            { value: '1/4', text: '1/4' },
+            { value: '1/3', text: '1/3' },
+            { value: '2/5', text: '2/5' },
+            { value: '1/2', text: '1/2' },
+            { value: '3/5', text: '3/5' },
+            { value: '2/3', text: '2/3' },
+            { value: '3/4', text: '3/4' },
+            { value: '4/5', text: '4/5' },
         ],
     };
 
     const modulationOptions1 = {
-        standard1: [
-            { value: 'mod1', text: 'QPSK' }
+        dvbs: [
+            { value: 'QPSK', text: 'QPSK' }
         ],
-        standard2: [
-            { value: 'mod2', text: 'QPSK' },
-            { value: 'mod3', text: '8-PSK' },
-            { value: 'mod4', text: '16APSK' },
-            { value: 'mod5', text: '32APSK' },
+        dvbs2: [
+            { value: 'QPSK', text: 'QPSK' },
+            { value: '8-PSK', text: '8-PSK' },
+            { value: '16-APSK', text: '16-APSK' },
+            { value: '32-APSK', text: '32-APSK' },
         ],
     };
 
@@ -131,6 +131,14 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     });
+    // Установка значений по умолчанию
+    dataStandSelect.value = 'dvbs2'; // Выбор стандарта DVB-S2
+    dataStandSelect.dispatchEvent(new Event('change')); // Вызываем событие изменения, чтобы заполнить speed и modulation
+    dataSpSelect.value = '1/2'; // Установка кодовой скорости по умолчанию
+    dataModSelect.value = 'QPSK'; // Установка типа модуляции по умолчанию
+
+    // Обновляем выбранные значения
+    updateSelectedValues(); // Вызываем функцию обновления значений
 });
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -160,8 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
         speed: '',
         modulation: '',
         polarization: '',
-        frequency1: '',
-        frequency2: '',
+        frequency: '',
+        // frequency2: '',
         satelliteLongitude: '', // Долгота спутника
         latitude: '',
         longitude: '',
@@ -182,8 +190,8 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedValues.speed = dataSpeedSelect.value;
         selectedValues.modulation = dataModulationSelect.value;
         selectedValues.polarization = dataPolarizationSelect.value;
-        selectedValues.frequency1 = inputFrec.value;
-        selectedValues.frequency2 = inputFrec1.value;
+        selectedValues.frequency = inputFrec.value;
+        // selectedValues.frequency2 = inputFrec1.value;
         selectedValues.latitude = inputLat.value;
         selectedValues.longitude = inputLng.value;
         selectedValues.Power = inputPower.value;
@@ -226,8 +234,8 @@ document.addEventListener('DOMContentLoaded', () => {
     inputFrec.addEventListener('input', updateSelectedValues); //Частота вещания 
     inputPower.addEventListener('input', updateSelectedValues); //Мощность передатчика
     inputAntennaGain.addEventListener('input', updateSelectedValues); //Коэффициент усиления антенны
-    // inputLat.addEventListener('input', updateSelectedValues);
-    // inputLng.addEventListener('input', updateSelectedValues);
+    inputLat.addEventListener('input', updateSelectedValues);
+    inputLng.addEventListener('input', updateSelectedValues);
     inputWidth.addEventListener('input', updateSelectedValues);
     inputHeight.addEventListener('input', updateSelectedValues);
     inputAzim.addEventListener('input', updateSelectedValues);
@@ -246,6 +254,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Функция для отправки данных на сервер
     function sendData() {
+
+        // Проверка на обязательные поля
+        if (!selectedValues.standard || !selectedValues.speed || !selectedValues.modulation ||
+            !selectedValues.polarization || !selectedValues.frequency || !selectedValues.satelliteLongitude ||
+            !selectedValues.latitude || !selectedValues.longitude ||
+            !selectedValues.Power || !selectedValues.AntennaGain ||
+            !selectedValues.Width || !selectedValues.Hight ||
+            !selectedValues.Azimuth || !selectedValues.Pol ||
+            !selectedValues.Stand || !selectedValues.Sp ||
+            !selectedValues.Mod) {
+            alert("Пожалуйста, заполните все обязательные поля.");
+            return; // Прерываем выполнение функции, если есть незаполненные поля
+        }
+
+        // Проверка на корректность координат
+        if (isNaN(selectedValues.latitude) || isNaN(selectedValues.longitude)) {
+            alert("Координаты должны быть числовыми значениями.");
+            return; // Прерываем выполнение функции, если координаты некорректные
+        }
+
+
+        // Обновление значений в selectedValues, если координаты не совпадают
+        const inputLatValue = parseFloat(inputLat.value).toFixed(4);
+        const inputLngValue = parseFloat(inputLng.value).toFixed(4);
+
+        if (inputLatValue !== selectedValues.latitude || inputLngValue !== selectedValues.longitude) {
+            selectedValues.latitude = inputLatValue; // Обновляем широту
+            selectedValues.longitude = inputLngValue; // Обновляем долготу
+
+        }
+
         fetch('http://localhost:3000/save', {
                 method: 'POST',
                 headers: {

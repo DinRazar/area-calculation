@@ -5,14 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>area-calculation</title>
-    <!-- Библиотека leaflet для оффлайн расчётов -->
     <script src="./libs/dist/leaflet.js"></script>
     <script src="./libs/dist/leaflet-measure.js"></script>
-    <!-- leaflet стили -->
+
     <link rel="stylesheet" href="./libs/dist/leaflet.css">
     <link rel="stylesheet" href="./libs/dist/leaflet-measure.css">
-    <!-- Мои стили -->
-    <link rel="stylesheet" href="./style2.css">
+
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
@@ -20,12 +19,12 @@
         <select id="dataDropdown" class="styled-dropdown">
         <option value="" disabled selected hidden> Выберите спутник </option>
         </select>
-        <!-- Контейнер для результатов -->
+
         <div id="mainCalculation">
             <select id="dataStandard" class="styled-dropdown">
                 <option value="" disabled selected hidden> Стандарт вещания </option>
-                <option value="standard1">DVB-S</option>
-                <option value="standard2">DVB-S2</option>
+                <option value="dvbs">DVB-S</option>
+                <option value="dvbs2">DVB-S2</option>
             </select>
             <div>
                 <label for="inputFrec">Частота вещания:</label>
@@ -33,10 +32,10 @@
             </div>
             <select id="dataPolarization" class="styled-dropdown">
                 <option value="" disabled selected hidden> Поляризация </option>
-                <option value="Polarization1">Линейная вертикальная</option>
-                <option value="Polarization2">Линейная горизонтальная</option>
-                <option value="Polarization3">Круговая правая</option>
-                <option value="Polarization4">Круговая левая</option>
+                <option value="V">Линейная вертикальная</option>
+                <option value="H">Линейная горизонтальная</option>
+                <option value="r">Круговая правая</option>
+                <option value="L">Круговая левая</option>
             </select>
             <select id="dataModulation" class="styled-dropdown">
                 <option value="" disabled selected hidden> Тип модуляции </option>
@@ -64,7 +63,11 @@
                 <input type="number" id="inputLng">
             </div>
             <div>
-                <label for="inputHeight">Высота подъёма:</label><br>
+                <label for="inputHeightSeaLevel">Высота над уровнем моря:</label><br>
+                <input type="number" id="inputHeightSeaLevel">
+            </div>
+            <div>
+                <label for="inputHeight">Высота подъёма над уровнем земли:</label><br>
                 <input type="number" id="inputHeight">
             </div>
             <div>
@@ -73,8 +76,8 @@
             </div>
             <select id="dataStand" class="styled-dropdown">
                 <option value="" disabled selected hidden> Стандарт вещания </option>
-                <option value="standard1">DVB-S</option>
-                <option value="standard2">DVB-S2</option>
+                <option value="dvbs">DVB-S</option>
+                <option value="dvbs2">DVB-S2</option>
             </select>
             <div>
                 <label for="inputFrec1">Частота вещания: </label><br>
@@ -83,7 +86,8 @@
             <div>
                 <select id="dataPol" class="styled-dropdown">
                     <option value="" disabled selected hidden> Поляризация </option>
-                    <option value="Polarization3">Круговая</option>
+                    <option value="L">Круговая левая</option>
+                    <option value="R">Круговая правая</option>
                 </select>
             </div>
             <div>
@@ -113,7 +117,6 @@
             </div>
         </div>
     </div>
-    <!-- Библиотека leaflet для онлайн расчётов -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="./data.js"></script>
     <script>
@@ -200,12 +203,31 @@
             document.getElementById('inputLat').value = lat.toFixed(4);
             document.getElementById('inputLng').value = lng.toFixed(4);
 
+            // Получаем высоту с Node.js сервера
+            fetch('http://localhost:3000/api/getElevation', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        latitude: lat,
+                        longitude: lng
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('inputHeightSeaLevel').value = data.elevation; // Обновляем поле высоты
+                })
+                .catch(error => console.error('Ошибка при получении высоты:', error));
+
             // Обработчик клика на маркер для отображения его координат
             lastMarker.on('drag', function() {
                 const currentLatLng = lastMarker.getLatLng();
                 // lastMarker.bindPopup(`Координаты: ${currentLatLng.lat.toFixed(4)}, ${currentLatLng.lng.toFixed(4)}`).openPopup();
                 document.getElementById('inputLat').value = currentLatLng.lat.toFixed(4);
                 document.getElementById('inputLng').value = currentLatLng.lng.toFixed(4);
+
+
             });
         });
 
