@@ -44,6 +44,7 @@
                 <option value="" disabled selected hidden> Кодовая скорость </option>
             </select>
             <button id="applyButton">Применить</button>
+            <!-- <button id="draw-squares">Нарисовать</button> -->
         </div>
     </div>
     <div id="mapAndCalc">
@@ -268,6 +269,37 @@
 
         secondInputFreq.addEventListener('input', function() {
             syncFreq(secondInputFreq, mainInputFreq);
+        });
+
+        // Функция для загрузки JSON и отрисовки квадратов
+        async function loadSquares() {
+            const response = await fetch('coordinates.json'); // Замените на путь к вашему JSON
+            const data = await response.json();
+
+            data.forEach(coord => {
+                const lat = coord.latitude;
+                const lng = coord.longitude;
+
+                // Вычисление смещения для 1 км
+                const kmOffset = 0.009; // Смещение для 1 км в градусах
+                const lngOffset = kmOffset / Math.cos(lat * (Math.PI / 180)); // Корректировка для долготы
+
+                // Создание квадрата 1 км на 1 км
+                const bounds = [
+                    [lat + kmOffset, lng - lngOffset], // Северо-западная точка
+                    [lat - kmOffset, lng + lngOffset] // Юго-восточная точка
+                ];
+                L.rectangle(bounds, {
+                    color: "#a358e8",
+                    weight: 1,
+                    fillOpacity: 0.5
+                }).addTo(map);
+            });
+        }
+
+        // Обработчик события для кнопки
+        document.getElementById('applyButton').addEventListener('click', () => {
+            loadSquares();
         });
     </script>
 </body>
