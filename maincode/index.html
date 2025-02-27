@@ -7,7 +7,7 @@
     <title>area-calculation</title>
     <script src="./libs/dist/leaflet.js"></script>
     <script src="./libs/dist/leaflet-measure.js"></script>
-
+    <script src="https://unpkg.com/@turf/turf"></script>
     <link rel="stylesheet" href="./libs/dist/leaflet.css">
     <link rel="stylesheet" href="./libs/dist/leaflet-measure.css">
 
@@ -271,35 +271,75 @@
             syncFreq(secondInputFreq, mainInputFreq);
         });
 
-        // Функция для загрузки JSON и отрисовки квадратов
-        async function loadSquares() {
-            const response = await fetch('coordinates.json'); // Замените на путь к вашему JSON
+        // Массив для хранения прямоугольников
+        const rectangles = [];
+
+        // Загрузка координат из JSON файла
+        // потом сюда надо будет добавить считывание json с сервера
+        async function loadCoordinates() {
+            const response = await fetch('coordinates.json');
             const data = await response.json();
 
             data.forEach(coord => {
                 const lat = coord.latitude;
                 const lng = coord.longitude;
 
-                // Вычисление смещения для 1 км
-                const kmOffset = 0.009; // Смещение для 1 км в градусах
-                const lngOffset = kmOffset / Math.cos(lat * (Math.PI / 180)); // Корректировка для долготы
+                const kmOffset = 0.009; // Смещение в километрах
+                const lngOffset = kmOffset / Math.cos(lat * (Math.PI / 180));
 
-                // Создание квадрата 1 км на 1 км
+                // Создаем границы для прямоугольника
                 const bounds = [
-                    [lat + kmOffset, lng - lngOffset], // Северо-западная точка
-                    [lat - kmOffset, lng + lngOffset] // Юго-восточная точка
+                    [lat + kmOffset, lng - lngOffset],
+                    [lat - kmOffset, lng + lngOffset]
                 ];
-                L.rectangle(bounds, {
-                    color: "#a358e8",
-                    weight: 1,
-                    fillOpacity: 0.5
-                }).addTo(map);
+                rectangles.push(bounds);
+
+                // Добавление прямоугольника на карту
+                // L.rectangle(bounds, {
+                //     color: 'red',
+                //     weight: 1
+                // }).addTo(map);
             });
         }
 
-        // Обработчик события для кнопки
-        document.getElementById('applyButton').addEventListener('click', () => {
-            loadSquares();
+        // Вызов функции загрузки координат
+        loadCoordinates();
+
+        // Обработчик события для кнопки объединения
+        document.getElementById('applyButton').addEventListener('click', function() {
+            if (rectangles.length > 0) {
+                const turfPolygons = rectangles.map(bounds => {
+                    return turf.polygon([
+                        [
+                            [bounds[0][1], bounds[0][0]], // [lng, lat]
+                            [bounds[1][1], bounds[0][0]],
+                            [bounds[1][1], bounds[1][0]],
+                            [bounds[0][1], bounds[1][0]],
+                            [bounds[0][1], bounds[0][0]] // Замыкание полигона
+                        ]
+                    ]);
+                });
+
+                // Объединение полигонов
+                const merged = turf.union(turf.featureCollection(turfPolygons));
+
+                // Удаление старых прямоугольников с карты
+                map.eachLayer(function(layer) {
+                    if (layer instanceof L.Rectangle) {
+                        map.removeLayer(layer);
+                    }
+                });
+
+                // Добавление объединенного полигона на карту
+                L.geoJSON(merged, {
+                    color: 'red',
+                    weight: 1
+                }).addTo(map);
+
+                console.log(merged);
+            } else {
+                alert('Нет полигонов для объединения!');
+            }
         });
     </script>
 </body>
