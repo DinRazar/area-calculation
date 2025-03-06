@@ -43,6 +43,7 @@
                 <option value="" disabled selected hidden> Кодовая скорость </option>
             </select>
             <button id="applyButton">Применить</button>
+            <button id="show">Нарисовать</button>
             <!-- <button id="draw-squares">Нарисовать</button> -->
         </div>
     </div>
@@ -305,7 +306,7 @@
         loadCoordinates();
 
         // Обработчик события для кнопки объединения
-        document.getElementById('applyButton').addEventListener('click', function() {
+        document.getElementById('show').addEventListener('click', function() {
             if (rectangles.length > 0) {
                 const turfPolygons = rectangles.map(bounds => {
                     return turf.polygon([
