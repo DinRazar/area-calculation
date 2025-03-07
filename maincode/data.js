@@ -283,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
             (selectedValues.Power <= 0 || selectedValues.Power >= 2000) ||
             (selectedValues.Width <= 0 || selectedValues.Width >= 360)) {
             alert("Введены некоректные значения");
-            return; // Прерываем выполнение функции, если координаты некорректные
+            return; // Прерываем выполнение функции, если значения некорректные 
         }
 
         // Обновление значений в selectedValues, если координаты не совпадают
