@@ -15,31 +15,31 @@ app.use(bodyParser.json());
 
 // Чтение данных из Excel и конвертация в JSON
 
-// Настройка multer для загрузки файлов
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, './uploads'); // Папка, куда будут сохраняться загруженные файлы
-    },
-    filename: (req, file, cb) => {
-        cb(null, file.originalname); // Сохраняем файл с оригинальным именем
-    },
-});
+// // Настройка multer для загрузки файлов
+// const storage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//         cb(null, './uploads'); // Папка, куда будут сохраняться загруженные файлы
+//     },
+//     filename: (req, file, cb) => {
+//         cb(null, file.originalname); // Сохраняем файл с оригинальным именем
+//     },
+// });
 
-const upload = multer({ storage: storage });
+// const upload = multer({ storage: storage });
 
-// Эндпоинт для загрузки файла
-app.post('/upload', upload.single('file'), (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ status: 'error', message: 'Файл не загружен' });
-    }
-    console.log('Файл загружен:', req.file);
-    res.json({ status: 'success', message: 'Файл успешно загружен' });
-});
+// // Эндпоинт для загрузки файла
+// app.post('/upload', upload.single('file'), (req, res) => {
+//     if (!req.file) {
+//         return res.status(400).json({ status: 'error', message: 'Файл не загружен' });
+//     }
+//     console.log('Файл загружен:', req.file);
+//     res.json({ status: 'success', message: 'Файл успешно загружен' });
+// });
 
-// Эндпоинт для получения coordinates.json
-app.get('/coordinates.json', (req, res) => {
-    res.sendFile(path.join(__dirname, 'uploads', 'coordinates.json')); // Убедитесь, что файл находится в папке uploads
-});
+// // Эндпоинт для получения coordinates.json
+// app.get('/coordinates.json', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'uploads', 'coordinates.json')); // Убедитесь, что файл находится в папке uploads
+// });
 
 app.get('/data', (req, res) => {
     const workbook = xlsx.readFile('sput.xlsx');
