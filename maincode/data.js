@@ -278,6 +278,13 @@ document.addEventListener('DOMContentLoaded', () => {
             return; // Прерываем выполнение функции, если координаты некорректные
         }
 
+        // Проверка на соответсвие значений (Азимут, мощность, ширина)
+        if ((selectedValues.Azimuth <= 0 || selectedValues.Azimuth >= 360) ||
+            (selectedValues.Power <= 0 || selectedValues.Power >= 2000) ||
+            (selectedValues.Width <= 0 || selectedValues.Width >= 360)) {
+            alert("Введены некоректные значения");
+            return; // Прерываем выполнение функции, если координаты некорректные
+        }
 
         // Обновление значений в selectedValues, если координаты не совпадают
         const inputLatValue = parseFloat(inputLat.value).toFixed(4);
