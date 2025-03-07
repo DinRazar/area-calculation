@@ -13,8 +13,6 @@ app.use(cors()); // Разрешаем CORS для взаимодействия 
 app.use(express.static(path.join(__dirname)));
 app.use(bodyParser.json());
 
-// Чтение данных из Excel и конвертация в JSON
-
 // // Настройка multer для загрузки файлов
 // const storage = multer.diskStorage({
 //     destination: (req, file, cb) => {
@@ -40,6 +38,8 @@ app.use(bodyParser.json());
 // app.get('/coordinates.json', (req, res) => {
 //     res.sendFile(path.join(__dirname, 'uploads', 'coordinates.json')); // Убедитесь, что файл находится в папке uploads
 // });
+
+// Чтение данных из Excel и конвертация в JSON
 
 app.get('/data', (req, res) => {
     const workbook = xlsx.readFile('sput.xlsx');

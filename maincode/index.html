@@ -26,7 +26,7 @@
                 <option value="dvbs2">DVB-S2</option>
             </select>
             <div>
-                <label for="inputFrec">Частота вещания:</label>
+                <label for="inputFrec">Частота вещания [Ггц]:</label>
                 <input type="number" id="inputFrec">
             </div>
             <select id="dataPolarization" class="styled-dropdown">
@@ -56,24 +56,25 @@
         </div>
         <div id="secondCalculation">
             <div>
-                <label for="inputLat">Широта:</label><br>
+                <label for="inputLat">Широта [град]:</label><br>
                 <input type="number" id="inputLat">
             </div>
             <div>
-                <label for="inputLng">Долгота:</label><br>
+                <label for="inputLng">Долгота [град]:</label><br>
                 <input type="number" id="inputLng">
             </div>
             <div>
-                <label for="inputHeightSeaLevel">Высота над уровнем моря:</label><br>
+                <label for="inputHeightSeaLevel">Высота над уровнем моря [м]:</label><br>
                 <input type="number" id="inputHeightSeaLevel">
             </div>
             <div>
-                <label for="inputHeight">Высота подъёма над уровнем земли:</label><br>
+                <label for="inputHeight">Высота подъёма над уровнем земли [м]:</label><br>
                 <input type="number" id="inputHeight">
             </div>
             <div>
-                <label for="inputAzim">Азимут направления главного лепестка:</label><br>
-                <input type="number" id="inputAzim">
+                <label for="inputAzim">Азимут направления главного лепестка [град]:</label><br>
+                <input type="number" id="inputAzim" min="0" max="360" required>
+                <span></span>
             </div>
             <select id="dataStand" class="styled-dropdown">
                 <option value="" disabled selected hidden> Стандарт вещания </option>
@@ -81,7 +82,7 @@
                 <option value="dvbs2">DVB-S2</option>
             </select>
             <div>
-                <label for="inputFrec1">Частота вещания: </label><br>
+                <label for="inputFrec1">Частота вещания [Ггц]: </label><br>
                 <input type="number" id="inputFrec1">
             </div>
             <div>
@@ -102,17 +103,17 @@
                 </select>
             </div>
             <div>
-                <label for="inputPower">Мощность передатчика:</label><br>
+                <label for="inputPower">Мощность передатчика [Вт]:</label><br>
                 <input type="number" id="inputPower" value="2" min="0" max="2000" required>
                 <span></span>
             </div>
             <div>
-                <label for="inputAntennaGain">Коэффициент усиления антенны:</label>
+                <label for="inputAntennaGain">Коэффициент усиления антенны [dBi]:</label>
                 <input type="number" id="inputAntennaGain" value="20">
             </div>
 
             <div>
-                <label for="inputWidth">Ширина главного лепестка:</label><br>
+                <label for="inputWidth">Ширина главного лепестка [град]:</label><br>
                 <input type="number" id="inputWidth" value="18" min="0" max="360" required>
                 <span></span>
             </div>
