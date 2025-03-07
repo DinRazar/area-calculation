@@ -1,11 +1,11 @@
 const express = require('express');
-const fs = require('fs'); // Импортируем модуль fs
+const fs = require('fs'); // Импорт модуля fs
 const xlsx = require('xlsx');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const { spawn } = require('child_process');
-const multer = require('multer'); // Импортируем multer
+const multer = require('multer'); // Импор модуля multer
 const app = express();
 const PORT = 3000;
 

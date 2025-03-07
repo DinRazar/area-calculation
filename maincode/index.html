@@ -273,12 +273,15 @@
 
         // Массив для хранения прямоугольников
         const rectangles = [];
+        let currentPolygonLayer = null; // Переменная для хранения текущего полигона
 
-        // Загрузка координат из JSON файла
-        // потом сюда надо будет добавить считывание json с сервера
+        // Функция загрузки координат из JSON файла
         async function loadCoordinates() {
             const response = await fetch('coordinates.json');
             const data = await response.json();
+
+            // Очищаем массив перед загрузкой новых координат
+            rectangles.length = 0;
 
             data.forEach(coord => {
                 const lat = coord.latitude;
@@ -293,20 +296,13 @@
                     [lat - kmOffset, lng + lngOffset]
                 ];
                 rectangles.push(bounds);
-
-                // Добавление прямоугольника на карту
-                // L.rectangle(bounds, {
-                //     color: 'red',
-                //     weight: 1
-                // }).addTo(map);
             });
         }
 
-        // Вызов функции загрузки координат
-        loadCoordinates();
+        // Обработчик события для кнопки "Show"
+        document.getElementById('show').addEventListener('click', async function() {
+            await loadCoordinates(); // Загружаем новые координаты
 
-        // Обработчик события для кнопки объединения
-        document.getElementById('show').addEventListener('click', function() {
             if (rectangles.length > 0) {
                 const turfPolygons = rectangles.map(bounds => {
                     return turf.polygon([
@@ -323,15 +319,13 @@
                 // Объединение полигонов
                 const merged = turf.union(turf.featureCollection(turfPolygons));
 
-                // Удаление старых прямоугольников с карты
-                map.eachLayer(function(layer) {
-                    if (layer instanceof L.Rectangle) {
-                        map.removeLayer(layer);
-                    }
-                });
+                // Удаление старого полигона с карты, если он существует
+                if (currentPolygonLayer) {
+                    map.removeLayer(currentPolygonLayer);
+                }
 
-                // Добавление объединенного полигона на карту
-                L.geoJSON(merged, {
+                // Добавление нового объединенного полигона на карту
+                currentPolygonLayer = L.geoJSON(merged, {
                     color: 'red',
                     weight: 1
                 }).addTo(map);
