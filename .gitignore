@@ -1,4 +1,5 @@
 maincode/tiff
 maincode/area-calculation.tar
 maincode/data.json
-maincode/uploads/coordinates.json
+maincode/coordinates.json
+maincode/coordinates_pomexa.json
