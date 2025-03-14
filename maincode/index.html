@@ -15,33 +15,48 @@
 
 <body>
     <div id="controls">
-        <select id="dataDropdown" class="styled-dropdown">
-        <option value="" disabled selected hidden> Выберите спутник </option>
-        </select>
+        <div>
+            <label for="dataDropdown">Выберите спутник :</label><br>
+            <select id="dataDropdown" class="styled-dropdown">
+                <option value="" disabled selected hidden> Выберите спутник </option>
+            </select>
+        </div>
 
         <div id="mainCalculation">
-            <select id="dataStandard" class="styled-dropdown">
-                <option value="" disabled selected hidden> Стандарт вещания </option>
-                <option value="dvbs">DVB-S</option>
-                <option value="dvbs2">DVB-S2</option>
-            </select>
             <div>
-                <label for="inputFrec">Частота вещания [Ггц]:</label>
+                <label for="dataStandard">Стандарт вещания:</label><br>
+                <select id="dataStandard" class="styled-dropdown">
+                    <option value="" disabled selected hidden> Выберите стандарт вещания </option>
+                    <option value="dvbs">DVB-S</option>
+                    <option value="dvbs2">DVB-S2</option>
+                </select>
+            </div>
+            <div>
+                <label for="inputFrec">Частота вещания [Ггц]:</label><br>
                 <input type="number" id="inputFrec">
             </div>
-            <select id="dataPolarization" class="styled-dropdown">
-                <option value="" disabled selected hidden> Поляризация </option>
-                <option value="V">Линейная вертикальная</option>
-                <option value="H">Линейная горизонтальная</option>
-                <option value="r">Круговая правая</option>
-                <option value="L">Круговая левая</option>
-            </select>
-            <select id="dataModulation" class="styled-dropdown">
-                <option value="" disabled selected hidden> Тип модуляции </option>
-            </select>
-            <select id="dataSpeed" class="styled-dropdown">
-                <option value="" disabled selected hidden> Кодовая скорость </option>
-            </select>
+            <div>
+                <label for="dataPolarization">Поляризация:</label><br>
+                <select id="dataPolarization" class="styled-dropdown">
+                    <option value="" disabled selected hidden> Выберите поляризацию </option>
+                    <option value="V">Линейная вертикальная</option>
+                    <option value="H">Линейная горизонтальная</option>
+                    <option value="r">Круговая правая</option>
+                    <option value="L">Круговая левая</option>
+                </select>
+            </div>
+            <div>
+                <label for="dataModulation">Тип модуляции:</label><br>
+                <select id="dataModulation" class="styled-dropdown">
+                    <option value="" disabled selected hidden> Выберите тип модуляции </option>
+                </select>
+            </div>
+            <div>
+                <label for="dataSpeed">Кодовая скорость:</label><br>
+                <select id="dataSpeed" class="styled-dropdown">
+                    <option value="" disabled selected hidden> Выберите кодовую скорость </option>
+                </select>
+            </div>
             <button id="applyButton">Применить</button>
             <button id="show">Нарисовать</button>
             <!-- <button id="draw-squares">Нарисовать</button> -->
@@ -76,30 +91,36 @@
                 <input type="number" id="inputAzim" min="0" max="360" required>
                 <span></span>
             </div>
-            <select id="dataStand" class="styled-dropdown">
-                <option value="" disabled selected hidden> Стандарт вещания </option>
-                <option value="dvbs">DVB-S</option>
-                <option value="dvbs2">DVB-S2</option>
-            </select>
+            <div>
+                <label for="dataStand"> Стандарт вещания :</label><br>
+                <select id="dataStand" class="styled-dropdown">
+                    <option value="" disabled selected hidden> Выберите стандарт вещания </option>
+                    <option value="dvbs">DVB-S</option>
+                    <option value="dvbs2">DVB-S2</option>
+                </select>
+            </div>
             <div>
                 <label for="inputFrec1">Частота вещания [Ггц]: </label><br>
                 <input type="number" id="inputFrec1">
             </div>
             <div>
+                <label for="dataPol"> Поляризация:</label><br>
                 <select id="dataPol" class="styled-dropdown">
-                    <option value="" disabled selected hidden> Поляризация </option>
+                    <option value="" disabled selected hidden> Выберите поляризацию </option>
                     <option value="L">Круговая левая</option>
                     <option value="R">Круговая правая</option>
                 </select>
             </div>
             <div>
+                <label for="dataMod"> Тип модуляции:</label><br>
                 <select id="dataMod" class="styled-dropdown">
-                    <option value="" disabled selected hidden> Тип модуляции </option>
+                    <option value="" disabled selected hidden> Выберите тип модуляции </option>
                 </select>
             </div>
             <div>
+                <label for="dataMod"> Кодовая скорость:</label><br>
                 <select id="dataSp" class="styled-dropdown">
-                    <option value="" disabled selected hidden> Кодовая скорость </option>
+                    <option value="" disabled selected hidden> Выберите кодовую скорость </option>
                 </select>
             </div>
             <div>
@@ -248,11 +269,17 @@
                 });
 
                 dropdown.addEventListener('change', (event) => {
+                    try {
                         const selectedOption = event.target.selectedOptions[0];
                         const latitude = selectedOption.dataset.latitude;
                         const longitude = selectedOption.dataset.longitude;
-                    })
-                    .catch(error => console.error('Ошибка загрузки данных:', error));
+
+                        // Ваш код для работы с latitude и longitude
+
+                    } catch (error) {
+                        console.error('Ошибка при обработке выбора:', error);
+                    }
+                });
             });
 
         const mainInputFreq = document.getElementById('inputFrec');
@@ -272,26 +299,23 @@
             syncFreq(secondInputFreq, mainInputFreq);
         });
 
-        // Массив для хранения прямоугольников
+        // Массивы для хранения прямоугольников
         const rectangles = [];
+        const rectanglesNoise = [];
         let currentPolygonLayer = null; // Переменная для хранения текущего полигона
+        let currentPolygonNoiseLayer = null; // Переменная для хранения текущего полигона с помехами
 
-        // Функция загрузки координат из JSON файла
+        // Функция загрузки координат из JSON файлов
         async function loadCoordinates() {
             const response = await fetch('coordinates.json');
             const data = await response.json();
-
-            // Очищаем массив перед загрузкой новых координат
             rectangles.length = 0;
 
             data.forEach(coord => {
                 const lat = coord.latitude;
                 const lng = coord.longitude;
-
                 const kmOffset = 0.009; // Смещение в километрах
                 const lngOffset = kmOffset / Math.cos(lat * (Math.PI / 180));
-
-                // Создаем границы для прямоугольника
                 const bounds = [
                     [lat + kmOffset, lng - lngOffset],
                     [lat - kmOffset, lng + lngOffset]
@@ -300,32 +324,49 @@
             });
         }
 
+        async function loadCoordinatesNoise() {
+            const response = await fetch('coordinates_pomexa.json');
+            const data = await response.json();
+            rectanglesNoise.length = 0;
+
+            data.forEach(coord => {
+                const lat = coord.latitude;
+                const lng = coord.longitude;
+                const kmOffset = 0.009; // Смещение в километрах
+                const lngOffset = kmOffset / Math.cos(lat * (Math.PI / 180));
+                const bounds = [
+                    [lat + kmOffset, lng - lngOffset],
+                    [lat - kmOffset, lng + lngOffset]
+                ];
+                rectanglesNoise.push(bounds);
+            });
+        }
+
         // Обработчик события для кнопки "Show"
         document.getElementById('show').addEventListener('click', async function() {
-            await loadCoordinates(); // Загружаем новые координаты
+            await loadCoordinates(); // Загружаем новые координаты для полигонов
+            await loadCoordinatesNoise(); // Загружаем новые координаты для полигонов с помехами
 
+            // Обработка полигонов без помех
             if (rectangles.length > 0) {
                 const turfPolygons = rectangles.map(bounds => {
                     return turf.polygon([
                         [
-                            [bounds[0][1], bounds[0][0]], // [lng, lat]
+                            [bounds[0][1], bounds[0][0]],
                             [bounds[1][1], bounds[0][0]],
                             [bounds[1][1], bounds[1][0]],
                             [bounds[0][1], bounds[1][0]],
-                            [bounds[0][1], bounds[0][0]] // Замыкание полигона
+                            [bounds[0][1], bounds[0][0]]
                         ]
                     ]);
                 });
 
-                // Объединение полигонов
                 const merged = turf.union(turf.featureCollection(turfPolygons));
 
-                // Удаление старого полигона с карты, если он существует
                 if (currentPolygonLayer) {
                     map.removeLayer(currentPolygonLayer);
                 }
 
-                // Добавление нового объединенного полигона на карту
                 currentPolygonLayer = L.geoJSON(merged, {
                     color: 'red',
                     weight: 1
@@ -334,6 +375,36 @@
                 console.log(merged);
             } else {
                 alert('Нет полигонов для объединения!');
+            }
+
+            // Обработка полигонов с помехами
+            if (rectanglesNoise.length > 0) {
+                const turfPolygonsNoise = rectanglesNoise.map(bounds => {
+                    return turf.polygon([
+                        [
+                            [bounds[0][1], bounds[0][0]],
+                            [bounds[1][1], bounds[0][0]],
+                            [bounds[1][1], bounds[1][0]],
+                            [bounds[0][1], bounds[1][0]],
+                            [bounds[0][1], bounds[0][0]]
+                        ]
+                    ]);
+                });
+
+                const mergedNoise = turf.union(turf.featureCollection(turfPolygonsNoise));
+
+                if (currentPolygonNoiseLayer) {
+                    map.removeLayer(currentPolygonNoiseLayer);
+                }
+
+                currentPolygonNoiseLayer = L.geoJSON(mergedNoise, {
+                    color: 'yellow',
+                    weight: 1
+                }).addTo(map);
+
+                console.log(mergedNoise);
+            } else {
+                alert('Нет полигонов с помехами для объединения!');
             }
         });
     </script>

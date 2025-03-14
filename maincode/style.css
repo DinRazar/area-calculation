@@ -4,23 +4,146 @@
     padding: 0;
 }
 
+body,
+html {
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 8px;
+    height: 100%;
+    /* Высота страницы равна высоте экрана */
+    /* Убираем скролл на странице */
+}
+
+
+/* Общие стили для контейнера */
+
+#controls {
+    z-index: 2;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    /* Элементы выстраиваются вертикально */
+    gap: 10px;
+    /* Отступ между элементами */
+    padding: 10px;
+    background: #fff;
+}
+
+
+/* Стили для выпадающего списка с выбором спутника */
+
+#dataDropdown.styled-dropdown {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+    width: auto;
+    /* Ширина по содержимому */
+    min-width: 200px;
+    /* Минимальная ширина для удобства */
+}
+
+#dataDropdown.styled-dropdown:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+
+/* Стили для основного блока с элементами формы */
+
 #mainCalculation {
     display: flex;
-    gap: 15px;
+    overflow: hidden;
+    align-items: center;
+    gap: 10px;
+    /* Отступ между элементами */
+}
+
+
+/* Убираем отступы между label и input/select */
+
+#mainCalculation label,
+#controls label {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 0;
+    /* Убираем отступ снизу */
+}
+
+
+/* Стили для input и select */
+
+#mainCalculation input[type="number"],
+#mainCalculation .styled-dropdown {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+    width: auto;
+    /* Ширина по содержимому */
+    min-width: 150px;
+    /* Минимальная ширина для удобства */
+}
+
+
+/* Фокус для input и select */
+
+#mainCalculation input[type="number"]:focus,
+#mainCalculation .styled-dropdown:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+
+/* Стили для кнопок */
+
+#mainCalculation button {
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#mainCalculation button:hover {
+    background-color: #0056b3;
+}
+
+#mainCalculation button#show {
+    background-color: #28a745;
+}
+
+#mainCalculation button#show:hover {
+    background-color: #218838;
 }
 
 #mapAndCalc {
     display: flex;
     gap: 15px;
     cursor: pointer;
+    height: 100%;
 }
 
 #map {
+    overflow: hidden;
+    flex: 1;
     height: 80vh;
+    /* 100% высоты экрана */
     width: 100%;
+    /* 100% ширины */
+    position: relative;
+    /* Для позиционирования кнопок */
     border-radius: 5px;
-    margin: 20px 0;
+    margin: 0;
+    /* Убираем внешние отступы */
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -50,29 +173,62 @@
     color: white;
 }
 
-input[type="number"]:invalid+span:after {
-    content: '✖';
-    padding-left: 5px;
-    /* color: red; */
+
+/* Стили для контейнера #secondCalculation */
+
+#secondCalculation {
+    display: flex;
+    flex-direction: column;
+    /* Элементы выстраиваются вертикально */
+    gap: 10px;
+    /* Отступ между элементами */
+    padding: 10px;
+    background: #fff;
+    height: 100%;
 }
 
-input[type="number"]:valid+span:after {
-    content: '✓';
-    padding-left: 5px;
-    /* color: green; */
+
+/* Убираем отступы между label и input/select */
+
+#secondCalculation label {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 0;
+    /* Убираем отступ снизу */
 }
 
-input[type="number"] {
-    -moz-appearance: textfield;
-    -webkit-appearance: textfield;
-    appearance: textfield;
+
+/* Стили для input и select */
+
+#secondCalculation input[type="number"],
+#secondCalculation .styled-dropdown {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+    width: 100%;
+    /* Ширина на всю доступную ширину */
+    box-sizing: border-box;
+    /* Учитываем padding в ширине */
 }
 
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    display: none;
+
+/* Фокус для input и select */
+
+#secondCalculation input[type="number"]:focus,
+#secondCalculation .styled-dropdown:focus {
+    border-color: #007bff;
+    outline: none;
 }
 
-input[type='number'] {
-    width: 80px;
+
+/* Стили для выпадающих списков */
+
+#secondCalculation .styled-dropdown {
+    width: 100%;
+    /* Ширина на всю доступную ширину */
+    min-width: 150px;
+    /* Минимальная ширина для удобства */
 }

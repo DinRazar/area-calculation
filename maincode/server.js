@@ -11,33 +11,39 @@ const PORT = 3000;
 
 app.use(cors()); // Разрешаем CORS для взаимодействия с клиентом
 app.use(express.static(path.join(__dirname)));
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
-// // Настройка multer для загрузки файлов
-// const storage = multer.diskStorage({
-//     destination: (req, file, cb) => {
-//         cb(null, './uploads'); // Папка, куда будут сохраняться загруженные файлы
-//     },
-//     filename: (req, file, cb) => {
-//         cb(null, file.originalname); // Сохраняем файл с оригинальным именем
-//     },
-// });
+// Настройка multer для загрузки файлов
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, '/uploads'); // Папка, куда будут сохраняться загруженные файлы
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname); // Сохраняем файл с оригинальным именем
+    },
+});
 
-// const upload = multer({ storage: storage });
+const upload = multer({ storage: storage, imits: { fileSize: 10 * 1024 * 1024 } });
 
-// // Эндпоинт для загрузки файла
-// app.post('/upload', upload.single('file'), (req, res) => {
-//     if (!req.file) {
-//         return res.status(400).json({ status: 'error', message: 'Файл не загружен' });
-//     }
-//     console.log('Файл загружен:', req.file);
-//     res.json({ status: 'success', message: 'Файл успешно загружен' });
-// });
+// Эндпоинт для загрузки файла
+app.post('/uploads', upload.single('file'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ status: 'error', message: 'Файл не загружен' });
+    }
+    console.log('Файл загружен:', req.file);
+    res.json({ status: 'success', message: 'Файл успешно загружен' });
+});
 
-// // Эндпоинт для получения coordinates.json
-// app.get('/coordinates.json', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'uploads', 'coordinates.json')); // Убедитесь, что файл находится в папке uploads
-// });
+// Эндпоинт для получения coordinates.json
+app.get('/coordinates.json', (req, res) => {
+    res.sendFile(path.join(__dirname, 'coordinates.json'));
+});
+
+// Эндпоинт для получения coordinates_pomexa.json
+app.get('/coordinates_pomexa.json', (req, res) => {
+    res.sendFile(path.join(__dirname, 'coordinates_pomexa.json'));
+});
 
 // Чтение данных из Excel и конвертация в JSON
 

@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
     dataModSelect.value = 'QPSK'; // Установка типа модуляции по умолчанию
 
     // Обновляем выбранные значения
-    updateSelectedValues(); // Вызываем функцию обновления значений
+    // updateSelectedValues(); // Вызываем функцию обновления значений
 });
 
 document.addEventListener('DOMContentLoaded', () => {
