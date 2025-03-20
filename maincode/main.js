@@ -157,8 +157,10 @@ secondInputFreq.addEventListener('input', function() {
 // Массивы для хранения прямоугольников
 const rectangles = [];
 const rectanglesNoise = [];
+const rectanglesEllipse = [];
 let currentPolygonLayer = null; // Переменная для хранения текущего полигона
 let currentPolygonNoiseLayer = null; // Переменная для хранения текущего полигона с помехами
+let currentPolygonEllipseLayer = null;
 
 // Функция загрузки координат из JSON файлов
 async function loadCoordinates() {
@@ -197,10 +199,30 @@ async function loadCoordinatesNoise() {
     });
 }
 
+async function loadCoordinatesEllipse() {
+    const response = await fetch('coordinates_ellipse.json');
+    const data = await response.json();
+    rectanglesEllipse.length = 0;
+
+    data.forEach(coord => {
+        const lat = coord.latitude;
+        const lng = coord.longitude;
+        const kmOffset = 0.009; // Смещение в километрах
+        const lngOffset = kmOffset / Math.cos(lat * (Math.PI / 180));
+        const bounds = [
+            [lat + kmOffset, lng - lngOffset],
+            [lat - kmOffset, lng + lngOffset]
+        ];
+        rectanglesEllipse.push(bounds);
+    });
+}
+
 // Обработчик события для кнопки "Show"
 document.getElementById('show').addEventListener('click', async function() {
+
     await loadCoordinates(); // Загружаем новые координаты для полигонов
     await loadCoordinatesNoise(); // Загружаем новые координаты для полигонов с помехами
+    await loadCoordinatesEllipse();
 
     // Обработка полигонов без помех
     if (rectangles.length > 0) {
@@ -260,5 +282,35 @@ document.getElementById('show').addEventListener('click', async function() {
         console.log(mergedNoise);
     } else {
         alert('Нет полигонов с помехами для объединения!');
+    }
+
+    // Обработка полигонов без помех
+    if (rectanglesEllipse.length > 0) {
+        const turfPolygonsEllipse = rectanglesEllipse.map(bounds => {
+            return turf.polygon([
+                [
+                    [bounds[0][1], bounds[0][0]],
+                    [bounds[1][1], bounds[0][0]],
+                    [bounds[1][1], bounds[1][0]],
+                    [bounds[0][1], bounds[1][0]],
+                    [bounds[0][1], bounds[0][0]]
+                ]
+            ]);
+        });
+
+        const mergedEllipse = turf.union(turf.featureCollection(turfPolygonsEllipse));
+
+        if (currentPolygonEllipseLayer) {
+            map.removeLayer(currentPolygonEllipseLayer);
+        }
+
+        currentPolygonEllipseLayer = L.geoJSON(mergedEllipse, {
+            color: 'green',
+            weight: 1
+        }).addTo(map);
+
+        console.log(mergedEllipse);
+    } else {
+        alert('Нет полигонов для объединения!');
     }
 });

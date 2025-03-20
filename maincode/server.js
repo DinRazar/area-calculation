@@ -45,6 +45,11 @@ app.get('/coordinates_pomexa.json', (req, res) => {
     res.sendFile(path.join(__dirname, 'coordinates_pomexa.json'));
 });
 
+// Эндпоинт для получения coordinates_ellipse.json
+app.get('/coordinates_ellipse.json', (req, res) => {
+    res.sendFile(path.join(__dirname, 'coordinates_ellipse.json'));
+});
+
 // Чтение данных из Excel и конвертация в JSON
 
 app.get('/data', (req, res) => {

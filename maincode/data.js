@@ -161,7 +161,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const dataStandSelect = document.getElementById('dataStand');
     const dataSpSelect = document.getElementById('dataSp');
     const dataModSelect = document.getElementById('dataMod');
-    const inputHeightSeaLevel = document.getElementById('inputHeightSeaLevel')
+    const inputHeightSeaLevel = document.getElementById('inputHeightSeaLevel');
+    const inputKSI = document.getElementById('inputKSI')
+
 
     // Объект для хранения выбранных значений
     let selectedValues = {
@@ -183,7 +185,8 @@ document.addEventListener('DOMContentLoaded', () => {
         Pol: '',
         Stand: '',
         Sp: '',
-        Mod: ''
+        Mod: '',
+        ksi: ''
     };
 
     // Функция для обновления выбранных значений
@@ -206,6 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedValues.Stand = dataStandSelect.value;
         selectedValues.Sp = dataSpSelect.value;
         selectedValues.Mod = dataModSelect.value;
+        selectedValues.ksi = inputKSI.value;
     }
 
     // Загрузка данных с сервера
@@ -247,8 +251,8 @@ document.addEventListener('DOMContentLoaded', () => {
     dataStandSelect.addEventListener('change', updateSelectedValues);
     dataSpSelect.addEventListener('change', updateSelectedValues);
     dataModSelect.addEventListener('change', updateSelectedValues);
-    inputHeightSeaLevel.addEventListener('input', updateSelectedValues)
-
+    inputHeightSeaLevel.addEventListener('input', updateSelectedValues);
+    inputKSI.addEventListener('input', updateSelectedValues);
 
 
     // Обработчик для кнопки "Применить"
@@ -267,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
             !selectedValues.Width || !selectedValues.Hight ||
             !selectedValues.Azimuth || !selectedValues.Pol ||
             !selectedValues.Stand || !selectedValues.Sp ||
-            !selectedValues.Mod || !selectedValues.HeightSeaLevel) {
+            !selectedValues.Mod || !selectedValues.HeightSeaLevel || !selectedValues.ksi) {
             alert("Пожалуйста, заполните все обязательные поля.");
             return; // Прерываем выполнение функции, если есть незаполненные поля
         }
@@ -281,7 +285,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Проверка на соответсвие значений (Азимут, мощность, ширина)
         if ((selectedValues.Azimuth <= 0 || selectedValues.Azimuth >= 360) ||
             (selectedValues.Power <= 0 || selectedValues.Power >= 2000) ||
-            (selectedValues.Width <= 0 || selectedValues.Width >= 360)) {
+            (selectedValues.Width <= 0 || selectedValues.Width >= 360) ||
+            (selectedValues.ksi <= 0 || selectedValues.ksi >= 90)) {
             alert("Введены некоректные значения");
             return; // Прерываем выполнение функции, если значения некорректные 
         }

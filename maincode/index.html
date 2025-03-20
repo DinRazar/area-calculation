@@ -14,6 +14,9 @@
 </head>
 
 <body>
+    <!-- <div id="loadingMessage" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.8); padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);">
+        Подождите, все рисуется...
+    </div> -->
     <div id="controls">
         <div>
             <label for="dataDropdown">Выберите спутник :</label><br>
@@ -89,6 +92,11 @@
             <div>
                 <label for="inputAzim">Азимут направления главного лепестка [град]:</label><br>
                 <input type="number" id="inputAzim" min="0" max="360" required>
+                <span></span>
+            </div>
+            <div>
+                <label for="inputKSI">Угол подъёма антенны [град]:</label>
+                <input type="number" id="inputKSI" value="30" min="0" max="90" required>
                 <span></span>
             </div>
             <div>
