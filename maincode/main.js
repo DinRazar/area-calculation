@@ -162,8 +162,14 @@ let currentPolygonLayer = null; // Переменная для хранения 
 let currentPolygonNoiseLayer = null; // Переменная для хранения текущего полигона с помехами
 let currentPolygonEllipseLayer = null;
 
-// Функция загрузки координат из JSON файлов
+
 async function loadCoordinates() {
+    // Считываем значение size из scale.json
+    const scaleResponse = await fetch('scale.json');
+    const scaleData = await scaleResponse.json();
+    const size = scaleData.size; // Получаем значение size
+
+
     const response = await fetch('coordinates.json');
     const data = await response.json();
     rectangles.length = 0;
@@ -171,17 +177,23 @@ async function loadCoordinates() {
     data.forEach(coord => {
         const lat = coord.latitude;
         const lng = coord.longitude;
-        const kmOffset = 0.009; // Смещение в километрах
-        const lngOffset = kmOffset / Math.cos(lat * (Math.PI / 180));
+
+        const lngOffset = size / Math.cos(lat * (Math.PI / 180));
         const bounds = [
-            [lat + kmOffset, lng - lngOffset],
-            [lat - kmOffset, lng + lngOffset]
+            [lat + size, lng - lngOffset],
+            [lat - size, lng + lngOffset]
         ];
         rectangles.push(bounds);
     });
 }
 
 async function loadCoordinatesNoise() {
+    // Считываем значение size из scale.json
+    const scaleResponse = await fetch('scale.json');
+    const scaleData = await scaleResponse.json();
+    const size = scaleData.size; // Получаем значение size
+
+
     const response = await fetch('coordinates_pomexa.json');
     const data = await response.json();
     rectanglesNoise.length = 0;
@@ -189,17 +201,23 @@ async function loadCoordinatesNoise() {
     data.forEach(coord => {
         const lat = coord.latitude;
         const lng = coord.longitude;
-        const kmOffset = 0.009; // Смещение в километрах
-        const lngOffset = kmOffset / Math.cos(lat * (Math.PI / 180));
+
+        const lngOffset = size / Math.cos(lat * (Math.PI / 180));
         const bounds = [
-            [lat + kmOffset, lng - lngOffset],
-            [lat - kmOffset, lng + lngOffset]
+            [lat + size, lng - lngOffset],
+            [lat - size, lng + lngOffset]
         ];
         rectanglesNoise.push(bounds);
     });
 }
 
 async function loadCoordinatesEllipse() {
+    // Считываем значение size из scale.json
+    const scaleResponse = await fetch('scale.json');
+    const scaleData = await scaleResponse.json();
+    const size = scaleData.size; // Получаем значение size
+
+
     const response = await fetch('coordinates_ellipse.json');
     const data = await response.json();
     rectanglesEllipse.length = 0;
@@ -207,11 +225,11 @@ async function loadCoordinatesEllipse() {
     data.forEach(coord => {
         const lat = coord.latitude;
         const lng = coord.longitude;
-        const kmOffset = 0.009; // Смещение в километрах
-        const lngOffset = kmOffset / Math.cos(lat * (Math.PI / 180));
+
+        const lngOffset = size / Math.cos(lat * (Math.PI / 180));
         const bounds = [
-            [lat + kmOffset, lng - lngOffset],
-            [lat - kmOffset, lng + lngOffset]
+            [lat + size, lng - lngOffset],
+            [lat - size, lng + lngOffset]
         ];
         rectanglesEllipse.push(bounds);
     });

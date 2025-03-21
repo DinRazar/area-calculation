@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const { spawn } = require('child_process');
+// const { exec } = require('child_process');
 const multer = require('multer'); // Импор модуля multer
 const app = express();
 const PORT = 3000;
@@ -50,6 +51,9 @@ app.get('/coordinates_ellipse.json', (req, res) => {
     res.sendFile(path.join(__dirname, 'coordinates_ellipse.json'));
 });
 
+app.get('/scale.json', (req, res) => {
+    res.sendFile(path.join(__dirname, 'scale.json'));
+});
 // Чтение данных из Excel и конвертация в JSON
 
 app.get('/data', (req, res) => {
@@ -78,6 +82,13 @@ app.post('/api/getElevation', (req, res) => {
         res.status(500).send('Ошибка при обработке запроса');
     });
 });
+
+// app.post('/api/executeCpp', (req, res) => {
+//     exec('Map', (mistake, stdout, stderr) => {
+//         if (mistake) throw mistake;
+//         console.log(stdout);
+//     })
+// })
 
 
 app.post('/save', (req, res) => {
