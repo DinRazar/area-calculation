@@ -27,6 +27,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage, imits: { fileSize: 10 * 1024 * 1024 } });
 
+// Кеш для данных
+let dataCache = null;
+
 // Эндпоинт для загрузки файла
 app.post('/uploads', upload.single('file'), (req, res) => {
     if (!req.file) {
@@ -54,6 +57,7 @@ app.get('/coordinates_ellipse.json', (req, res) => {
 app.get('/scale.json', (req, res) => {
     res.sendFile(path.join(__dirname, 'scale.json'));
 });
+
 // Чтение данных из Excel и конвертация в JSON
 
 app.get('/data', (req, res) => {
@@ -96,6 +100,8 @@ app.post('/save', (req, res) => {
     console.log('Полученные данные:', data);
 
     fs.writeFileSync('data.json', JSON.stringify(data, null, 2)); // Сохранения в файл json
+    // Обновляем кеш
+    dataCache = data; // Сохраняем данные в кеш
 
     res.json({ status: 'success', message: 'Данные сохранены' });
 });
@@ -104,6 +110,19 @@ app.post('/save', (req, res) => {
 app.get('/data.json', (req, res) => {
     res.sendFile(path.join(__dirname, 'data.json'));
 });
+// // Эндпоинт для получения данных из кеша или файла
+// app.get('/data', (req, res) => {
+//     if (dataCache) {
+//         console.log('Отдаем данные из кеша');
+//         return res.json(dataCache);
+//     }
+
+//     // Если кеш пуст, считываем данные из файла
+//     const fileData = fs.readFileSync('data.json', 'utf-8');
+//     dataCache = JSON.parse(fileData); // Кешируем данные из файла
+//     console.log('Считываем данные из файла');
+//     res.json(dataCache);
+// });
 
 
 app.get('/', (req, res) => {

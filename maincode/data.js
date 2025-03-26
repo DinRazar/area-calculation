@@ -283,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Проверка на соответсвие значений (Азимут, мощность, ширина)
-        if ((selectedValues.Azimuth <= 0 || selectedValues.Azimuth >= 360) ||
+        if ((selectedValues.Azimuth <= -1 || selectedValues.Azimuth >= 360) ||
             (selectedValues.Power <= 0 || selectedValues.Power >= 2000) ||
             (selectedValues.Width <= 0 || selectedValues.Width >= 360) ||
             (selectedValues.ksi <= 0 || selectedValues.ksi >= 90)) {

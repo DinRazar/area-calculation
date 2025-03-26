@@ -19,6 +19,18 @@ html {
 
 /* Общие стили для контейнера */
 
+#all {
+    display: flex;
+}
+
+
+/* 
+#mapandControls {
+    display: flex;
+    height: 70%;
+    width: 70%;
+} */
+
 #controls {
     z-index: 2;
     /* overflow: hidden; */
@@ -180,12 +192,11 @@ html {
 #secondCalculation {
     display: flex;
     flex-direction: column;
-    /* Элементы выстраиваются вертикально */
     gap: 10px;
-    /* Отступ между элементами */
     padding: 10px;
     background: #fff;
     height: 100%;
+    margin-top: 3%;
 }
 
 
