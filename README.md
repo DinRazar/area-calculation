@@ -4,4 +4,6 @@
 maincode/data.json
 maincode/coordinates.json
 maincode/coordinates_pomexa.json
+maincode/coordinates_ellipse.json
+maincode/scale.json
 
