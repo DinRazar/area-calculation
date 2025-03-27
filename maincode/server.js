@@ -87,14 +87,6 @@ app.post('/api/getElevation', (req, res) => {
     });
 });
 
-// app.post('/api/executeCpp', (req, res) => {
-//     exec('Map', (mistake, stdout, stderr) => {
-//         if (mistake) throw mistake;
-//         console.log(stdout);
-//     })
-// })
-
-
 app.post('/save', (req, res) => {
     const data = req.body; // Получаем данные из запроса
     console.log('Полученные данные:', data);
