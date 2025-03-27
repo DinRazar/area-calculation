@@ -14,9 +14,6 @@
 </head>
 
 <body>
-    <!-- <div id="loadingMessage" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.8); padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);">
-        Подождите, все рисуется...
-    </div> -->
     <div id="all">
         <div id="mapandControls">
             <div id="controls">
@@ -26,7 +23,6 @@
                 <option value="" disabled selected hidden> Выберите спутник </option>
             </select>
                 </div>
-
                 <div id="mainCalculation">
                     <div>
                         <label for="dataStandard">Стандарт вещания:</label><br>
@@ -64,18 +60,18 @@
                     </div>
                     <button id="applyButton">Применить</button>
                     <button id="show">Нарисовать</button>
-                    <!-- <button id="draw-squares">Нарисовать</button> -->
                 </div>
             </div>
-
-
             <div id="map">
                 <div class="button-group">
                     <button id="offlineBtn">Оффлайн</button>
                     <button id="onlineBtn">Онлайн</button>
                 </div>
-            </div>
+                <div class="button-group2">
+                    <button id="ZoneBtn"> Отметить зоны</button>
 
+                </div>
+            </div>
         </div>
         <div id="secondCalculation">
             <div>
@@ -145,7 +141,6 @@
                 <label for="inputAntennaGain">Коэффициент усиления антенны [dBi]:</label>
                 <input type="number" id="inputAntennaGain" value="20">
             </div>
-
             <div>
                 <label for="inputWidth">Ширина главного лепестка [град]:</label><br>
                 <input type="number" id="inputWidth" value="18" min="0" max="360" required>
@@ -153,7 +148,6 @@
             </div>
         </div>
     </div>
-
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="./data.js"></script>
     <script src="./main.js"></script>

@@ -17,13 +17,10 @@ html {
     display: flex;
 }
 
-
-/* 
 #mapandControls {
-    display: flex;
-    height: 70%;
+    height: 75%;
     width: 70%;
-} */
+}
 
 #controls {
     z-index: 2;
@@ -138,6 +135,32 @@ html {
 }
 
 .button-group button.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.button-group2 {
+    position: absolute;
+    top: 0.85%;
+    right: 5%;
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.button-group2 button {
+    margin: 5px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    transition: background-color 0.3s;
+}
+
+.button-group2 button.active {
     background-color: #007bff;
     color: white;
 }

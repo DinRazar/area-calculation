@@ -4,12 +4,9 @@ import sys
 
 def get_elevation_from_geotiff(lat, lng, geotiff_path):
     with rasterio.open(geotiff_path) as src:
-        # Получаем границы GeoTIFF файла
         bounds = src.bounds
-        
-        # Проверяем, попадают ли координаты в границы
+
         if not (bounds.left <= lng <= bounds.right and bounds.bottom <= lat <= bounds.top):
-            # print("Координаты не попадают в область GeoTIFF файла.", file=sys.stderr)
             sys.exit(1)  # Прекращаем выполнение программы
         
         # Преобразование координат в индексы пикселей
@@ -22,8 +19,6 @@ def get_elevation_from_geotiff(lat, lng, geotiff_path):
 if __name__ == "__main__":
     latitude = float(sys.argv[1])  # Широта
     longitude = float(sys.argv[2])  # Долгота
-    
-    # Укажите путь к вашему GeoTIFF файлу
     # geotiff_path = 'tiffs/supertiff2.tif'
     geotiff_path = 'tiffs/52.tif'
 

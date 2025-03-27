@@ -147,9 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dataModulationSelect = document.getElementById('dataModulation');
     const dataPolarizationSelect = document.getElementById('dataPolarization');
     const inputFrec = document.getElementById('inputFrec');
-    const inputFrec1 = document.getElementById('inputFrec1')
-    const applyButton = document.getElementById('applyButton'); // Кнопка "Применить"
-    const dataDropdown = document.getElementById('dataDropdown');
+    const inputFrec1 = document.getElementById('inputFrec1');
     const inputLat = document.getElementById('inputLat');
     const inputLng = document.getElementById('inputLng');
     const inputPower = document.getElementById('inputPower');
@@ -162,7 +160,90 @@ document.addEventListener('DOMContentLoaded', () => {
     const dataSpSelect = document.getElementById('dataSp');
     const dataModSelect = document.getElementById('dataMod');
     const inputHeightSeaLevel = document.getElementById('inputHeightSeaLevel');
-    const inputKSI = document.getElementById('inputKSI')
+    const inputKSI = document.getElementById('inputKSI');
+    const dataDropdown = document.getElementById('dataDropdown');
+
+    // Загружаем JSON данные
+    fetch('http://localhost:3000/data.json')
+        .then(response => response.json())
+        .then(data => {
+            // Применение данных из JSON в поля
+            dataStandardSelect.value = data.standard;
+            dataSpeedSelect.value = data.speed;
+            dataModulationSelect.value = data.modulation;
+            dataPolarizationSelect.value = data.polarization;
+            inputFrec.value = data.frequency;
+            inputFrec1.value = data.frequency;
+            inputLat.value = data.latitude;
+            inputLng.value = data.longitude;
+            inputPower.value = data.Power;
+            inputAntennaGain.value = data.AntennaGain;
+            inputWidth.value = data.Width;
+            inputHeight.value = data.Hight;
+            inputAzim.value = data.Azimuth;
+            dataPolSelect.value = data.Pol;
+            dataStandSelect.value = data.Stand;
+            dataSpSelect.value = data.Sp;
+            dataModSelect.value = data.Mod;
+            inputHeightSeaLevel.value = data.HeightSeaLevel;
+            inputKSI.value = data.ksi;
+
+            // Установим долготу спутника
+            satelliteLongitude = data.satelliteLongitude;
+            // Загрузка данных о спутниках (например, из вашего другого JSON файла)
+            dataDropdown.addEventListener('change', (event) => {
+                const selectedOption = event.target.selectedOptions[0];
+                satelliteLongitude = selectedOption.dataset.longitude; // Обновление долготы спутника
+            });
+
+            // Обновление стандартов и скорости на основе данных
+            updateSpeedAndModulation(data.standard);
+
+        })
+        .catch(error => {
+            console.error('Ошибка загрузки данных JSON:', error);
+        });
+
+    // Функция для обновления стандартов и модуляции/скорости
+    function updateSpeedAndModulation(standard) {
+        // Перезаполнение селектов в зависимости от выбранного стандарта
+        const speedOptions = {
+            dvbs: ['1/2', '2/3', '3/4', '5/6', '7/8'],
+            dvbs2: ['1/4', '1/3', '2/5', '1/2', '3/5', '2/3', '3/4', '4/5'],
+        };
+
+        const modulationOptions = {
+            dvbs: ['QPSK'],
+            dvbs2: ['QPSK', '8-PSK', '16-APSK', '32-APSK'],
+        };
+
+        // Очищаем селекты
+        dataSpeedSelect.innerHTML = '';
+        dataModulationSelect.innerHTML = '';
+
+        // Заполняем опции для выбранного стандарта
+        if (speedOptions[standard]) {
+            speedOptions[standard].forEach(option => {
+                const opt = document.createElement('option');
+                opt.value = option;
+                opt.textContent = option;
+                dataSpeedSelect.appendChild(opt);
+            });
+        }
+
+        if (modulationOptions[standard]) {
+            modulationOptions[standard].forEach(option => {
+                const opt = document.createElement('option');
+                opt.value = option;
+                opt.textContent = option;
+                dataModulationSelect.appendChild(opt);
+            });
+        }
+
+        // Устанавливаем значение по умолчанию
+        dataSpeedSelect.value = data.speed;
+        dataModulationSelect.value = data.modulation;
+    }
 
 
     // Объект для хранения выбранных значений
@@ -271,7 +352,8 @@ document.addEventListener('DOMContentLoaded', () => {
             !selectedValues.Width || !selectedValues.Hight ||
             !selectedValues.Azimuth || !selectedValues.Pol ||
             !selectedValues.Stand || !selectedValues.Sp ||
-            !selectedValues.Mod || !selectedValues.HeightSeaLevel || !selectedValues.ksi) {
+            !selectedValues.Mod || !selectedValues.HeightSeaLevel || !selectedValues.ksi
+        ) {
             alert("Пожалуйста, заполните все обязательные поля.");
             return; // Прерываем выполнение функции, если есть незаполненные поля
         }
