@@ -19,14 +19,6 @@ var onlineLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.pn
 offlineLayer.addTo(map);
 document.getElementById('offlineBtn').classList.add('active'); // Выделяем оффлайн кнопку
 
-
-// Создаем контрол для переключения слоев через leaflet (может ещё понадобится)
-// var baseLayers = {
-//     "Оффлайн": offlineLayer,
-//     "Онлайн": onlineLayer
-// };
-// var layerControl = L.control.layers(baseLayers).addTo(map);
-
 // отключение флага, что?
 map.attributionControl.setPrefix(false)
 
@@ -98,10 +90,9 @@ map.on('click', function(e) {
         })
         .catch(error => console.error('Ошибка при получении высоты:', error));
 
-    // Обработчик клика на маркер для отображения его координат
+    // Обработчик движения маркера
     lastMarker.on('drag', function() {
         const currentLatLng = lastMarker.getLatLng();
-        // lastMarker.bindPopup(`Координаты: ${currentLatLng.lat.toFixed(4)}, ${currentLatLng.lng.toFixed(4)}`).openPopup();
         document.getElementById('inputLat').value = currentLatLng.lat.toFixed(4);
         document.getElementById('inputLng').value = currentLatLng.lng.toFixed(4);
 
@@ -123,14 +114,12 @@ fetch('http://localhost:3000/data')
             dropdown.appendChild(option);
         });
 
+        // Короче тут какой-то баг, я хз что тут не так, он вроде ничего не ломает, он просто есть
         dropdown.addEventListener('change', (event) => {
             try {
                 const selectedOption = event.target.selectedOptions[0];
                 const latitude = selectedOption.dataset.latitude;
                 const longitude = selectedOption.dataset.longitude;
-
-                // Ваш код для работы с latitude и longitude
-
             } catch (error) {
                 console.error('Ошибка при обработке выбора:', error);
             }
@@ -193,7 +182,6 @@ async function loadCoordinatesNoise() {
     const scaleData = await scaleResponse.json();
     const size = scaleData.size; // Получаем значение size
 
-
     const response = await fetch('coordinates_pomexa.json');
     const data = await response.json();
     rectanglesNoise.length = 0;
@@ -216,7 +204,6 @@ async function loadCoordinatesEllipse() {
     const scaleResponse = await fetch('scale.json');
     const scaleData = await scaleResponse.json();
     const size = scaleData.size; // Получаем значение size
-
 
     const response = await fetch('coordinates_ellipse.json');
     const data = await response.json();
