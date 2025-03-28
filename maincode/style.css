@@ -50,6 +50,7 @@ html {
 #mainCalculation {
     display: flex;
     overflow: hidden;
+    overflow-x: scroll;
     align-items: center;
     gap: 10px;
 }
@@ -172,7 +173,7 @@ html {
     padding: 10px;
     background: #fff;
     height: 100%;
-    margin-top: 3%;
+    margin-top: 2%;
 }
 
 #secondCalculation label {
@@ -202,8 +203,7 @@ html {
 
 /* С этим надо разобраться, а то работает не так, как я хочу */
 
-
-/* #secondCalculation .styled-dropdown {
+#secondCalculatson .styled-dropdown {
     width: 100%;
     min-width: 150px;
 }
@@ -231,4 +231,4 @@ input[type="number"]::-webkit-inner-spin-button {
 
 input[type='number'] {
     width: 80px;
-} */
+}
