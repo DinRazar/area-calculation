@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
             dataModulationSelect.value = data.modulation;
             dataPolarizationSelect.value = data.polarization;
             inputFrec.value = data.frequency;
-            inputFrec1.value = data.frequency;
+            // inputFrec1.value = data.frequency1;
             inputLat.value = data.latitude;
             inputLng.value = data.longitude;
             inputPower.value = data.Power;
@@ -253,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modulation: '',
         polarization: '',
         frequency: '',
-        // frequency2: '',
+        frequency1: '', // Это значение нужно чисто мне, потом придмаю, как от него избавиться
         satelliteLongitude: '', // Долгота спутника
         latitude: '',
         longitude: '',
@@ -277,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedValues.modulation = dataModulationSelect.value;
         selectedValues.polarization = dataPolarizationSelect.value;
         selectedValues.frequency = inputFrec.value;
-        // selectedValues.frequency2 = inputFrec1.value;
+        selectedValues.frequency1 = inputFrec1.value;
         selectedValues.latitude = inputLat.value;
         selectedValues.longitude = inputLng.value;
         selectedValues.Power = inputPower.value;
@@ -346,13 +346,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Проверка на обязательные поля
         if (!selectedValues.standard || !selectedValues.speed || !selectedValues.modulation ||
-            !selectedValues.polarization || !selectedValues.frequency || !selectedValues.satelliteLongitude ||
+            !selectedValues.polarization || !selectedValues.satelliteLongitude ||
             !selectedValues.latitude || !selectedValues.longitude ||
             !selectedValues.Power || !selectedValues.AntennaGain ||
             !selectedValues.Width || !selectedValues.Hight ||
             !selectedValues.Azimuth || !selectedValues.Pol ||
             !selectedValues.Stand || !selectedValues.Sp ||
             !selectedValues.Mod || !selectedValues.HeightSeaLevel || !selectedValues.ksi
+            // || !selectedValues.frequency1 || !selectedValues.frequency
         ) {
             alert("Пожалуйста, заполните все обязательные поля.");
             return; // Прерываем выполнение функции, если есть незаполненные поля
