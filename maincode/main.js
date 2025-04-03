@@ -157,6 +157,7 @@ async function loadCoordinates() {
     const scaleResponse = await fetch('scale.json');
     const scaleData = await scaleResponse.json();
     const size = scaleData.size; // Получаем значение size
+    // alert(size)
 
 
     const response = await fetch('coordinates.json');
