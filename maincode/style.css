@@ -166,6 +166,17 @@ html {
     color: white;
 }
 
+
+/* 
+#zone-menu {
+    margin-top: 10px;
+    display: none;
+}
+
+#zone-menu button {
+    width: 100%;
+} */
+
 #secondCalculation {
     display: flex;
     flex-direction: column;
@@ -173,7 +184,7 @@ html {
     padding: 10px;
     background: #fff;
     height: 100%;
-    margin-top: 2%;
+    margin-top: 1%;
 }
 
 #secondCalculation label {

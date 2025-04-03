@@ -24,13 +24,14 @@
             </select>
                 </div>
                 <div id="mainCalculation">
+
                     <div>
                         <label for="dataStandard">Стандарт вещания:</label><br>
                         <select id="dataStandard" class="styled-dropdown">
-                    <option value="" disabled selected hidden> Выберите стандарт вещания </option>
-                    <option value="dvbs">DVB-S</option>
-                    <option value="dvbs2">DVB-S2</option>
-                </select>
+                            <option value="" disabled selected hidden> Выберите стандарт вещания </option>
+                             <option value="dvbs">DVB-S</option>
+                            <option value="dvbs2">DVB-S2</option>
+                        </select>
                     </div>
                     <div>
                         <label for="inputFrec">Частота вещания [Ггц]:</label><br>
@@ -39,27 +40,30 @@
                     <div>
                         <label for="dataPolarization">Поляризация:</label><br>
                         <select id="dataPolarization" class="styled-dropdown">
-                    <option value="" disabled selected hidden> Выберите поляризацию </option>
-                    <option value="V">Линейная вертикальная</option>
-                    <option value="H">Линейная горизонтальная</option>
-                    <option value="r">Круговая правая</option>
-                    <option value="L">Круговая левая</option>
-                </select>
+                            <option value="" disabled selected hidden> Выберите поляризацию </option>
+                            <option value="V">Линейная вертикальная</option>
+                            <option value="H">Линейная горизонтальная</option>
+                            <option value="r">Круговая правая</option>
+                            <option value="L">Круговая левая</option>
+                        </select>
                     </div>
                     <div>
                         <label for="dataModulation">Тип модуляции:</label><br>
                         <select id="dataModulation" class="styled-dropdown">
-                    <option value="" disabled selected hidden> Выберите тип модуляции </option>
-                </select>
+                            <option value="" disabled selected hidden> Выберите тип модуляции </option>
+                        </select>
                     </div>
                     <div>
                         <label for="dataSpeed">Кодовая скорость:</label><br>
                         <select id="dataSpeed" class="styled-dropdown">
-                    <option value="" disabled selected hidden> Выберите кодовую скорость </option>
-                </select>
+                         <option value="" disabled selected hidden> Выберите кодовую скорость </option>
+                        </select>
                     </div>
-                    <button id="applyButton">Применить</button>
-                    <button id="show">Нарисовать</button>
+
+                    <div id=D rawButton>
+                        <button id="applyButton">Применить</button>
+                        <button id="show">Нарисовать</button>
+                    </div>
                 </div>
             </div>
             <div id="map">
@@ -67,10 +71,14 @@
                     <button id="offlineBtn">Оффлайн</button>
                     <button id="onlineBtn">Онлайн</button>
                 </div>
-                <div class="button-group2">
-                    <button id="ZoneBtn"> Отметить зоны</button>
-
-                </div>
+                <!-- <div class="button-group2">
+                    <button id="ZoneBtn">Отметить зоны</button>
+                    <div id="zone-menu" style="display: none;">
+                        <button id="draw-polygon">Нарисовать полигон</button>
+                        <button id="send-polygon">Отправить</button>
+                        <button id="erase-polygon">Стереть полигон</button>
+                    </div>
+                </div> -->
             </div>
         </div>
         <div id="secondCalculation">
@@ -151,6 +159,7 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="./data.js"></script>
     <script src="./main.js"></script>
+    <!-- <script src="./poly.js"></script> -->
 </body>
 
 </html>
