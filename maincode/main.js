@@ -143,180 +143,265 @@ secondInputFreq.addEventListener('input', function() {
     syncFreq(secondInputFreq, mainInputFreq);
 });
 
-// Массивы для хранения прямоугольников
-const rectangles = [];
-const rectanglesNoise = [];
-const rectanglesEllipse = [];
-let currentPolygonLayer = null; // Переменная для хранения текущего полигона
-let currentPolygonNoiseLayer = null; // Переменная для хранения текущего полигона с помехами
-let currentPolygonEllipseLayer = null;
+// // Массивы для хранения прямоугольников
+// const rectangles = [];
+// const rectanglesNoise = [];
+// const rectanglesEllipse = [];
+// let currentPolygonLayer = null; // Переменная для хранения текущего полигона
+// let currentPolygonNoiseLayer = null; // Переменная для хранения текущего полигона с помехами
+// let currentPolygonEllipseLayer = null;
 
 
-async function loadCoordinates() {
-    // Считываем значение size из scale.json
-    const scaleResponse = await fetch('scale.json');
-    const scaleData = await scaleResponse.json();
-    const size = scaleData.size; // Получаем значение size
-    // alert(size)
+// async function loadCoordinates() {
+//     // Считываем значение size из scale.json
+//     const scaleResponse = await fetch('scale.json');
+//     const scaleData = await scaleResponse.json();
+//     const size = scaleData.size; // Получаем значение size
+//     // alert(size)
 
 
-    const response = await fetch('coordinates.json');
+//     const response = await fetch('coordinates.json');
+//     const data = await response.json();
+//     rectangles.length = 0;
+
+//     data.forEach(coord => {
+//         const lat = coord.latitude;
+//         const lng = coord.longitude;
+
+//         const lngOffset = size / Math.cos(lat * (Math.PI / 180));
+//         const bounds = [
+//             [lat + size, lng - lngOffset],
+//             [lat - size, lng + lngOffset]
+//         ];
+//         rectangles.push(bounds);
+//     });
+// }
+
+// async function loadCoordinatesNoise() {
+//     // Считываем значение size из scale.json
+//     const scaleResponse = await fetch('scale.json');
+//     const scaleData = await scaleResponse.json();
+//     const size = scaleData.size; // Получаем значение size
+
+//     const response = await fetch('coordinates_pomexa.json');
+//     const data = await response.json();
+//     rectanglesNoise.length = 0;
+
+//     data.forEach(coord => {
+//         const lat = coord.latitude;
+//         const lng = coord.longitude;
+
+//         const lngOffset = size / Math.cos(lat * (Math.PI / 180));
+//         const bounds = [
+//             [lat + size, lng - lngOffset],
+//             [lat - size, lng + lngOffset]
+//         ];
+//         rectanglesNoise.push(bounds);
+//     });
+// }
+
+// async function loadCoordinatesEllipse() {
+//     // Считываем значение size из scale.json
+//     const scaleResponse = await fetch('scale.json');
+//     const scaleData = await scaleResponse.json();
+//     const size = scaleData.size; // Получаем значение size
+
+//     const response = await fetch('coordinates_ellipse.json');
+//     const data = await response.json();
+//     rectanglesEllipse.length = 0;
+
+//     data.forEach(coord => {
+//         const lat = coord.latitude;
+//         const lng = coord.longitude;
+
+//         const lngOffset = size / Math.cos(lat * (Math.PI / 180));
+//         const bounds = [
+//             [lat + size, lng - lngOffset],
+//             [lat - size, lng + lngOffset]
+//         ];
+//         rectanglesEllipse.push(bounds);
+//     });
+// }
+
+// // Обработчик события для кнопки "Show"
+// document.getElementById('show').addEventListener('click', async function() {
+
+//     await loadCoordinates(); // Загружаем новые координаты для полигонов
+//     await loadCoordinatesNoise(); // Загружаем новые координаты для полигонов с помехами
+//     await loadCoordinatesEllipse();
+
+//     // Обработка полигонов без помех
+//     if (rectangles.length > 0) {
+//         const turfPolygons = rectangles.map(bounds => {
+//             return turf.polygon([
+//                 [
+//                     [bounds[0][1], bounds[0][0]],
+//                     [bounds[1][1], bounds[0][0]],
+//                     [bounds[1][1], bounds[1][0]],
+//                     [bounds[0][1], bounds[1][0]],
+//                     [bounds[0][1], bounds[0][0]]
+//                 ]
+//             ]);
+//         });
+
+//         const merged = turf.union(turf.featureCollection(turfPolygons));
+
+//         if (currentPolygonLayer) {
+//             map.removeLayer(currentPolygonLayer);
+//         }
+
+//         currentPolygonLayer = L.geoJSON(merged, {
+//             color: 'red',
+//             weight: 1
+//         }).addTo(map);
+
+//         console.log(merged);
+//     } else {
+//         alert('Нет полигонов для объединения!');
+//     }
+
+//     // Обработка полигонов с помехами
+//     if (rectanglesNoise.length > 0) {
+//         const turfPolygonsNoise = rectanglesNoise.map(bounds => {
+//             return turf.polygon([
+//                 [
+//                     [bounds[0][1], bounds[0][0]],
+//                     [bounds[1][1], bounds[0][0]],
+//                     [bounds[1][1], bounds[1][0]],
+//                     [bounds[0][1], bounds[1][0]],
+//                     [bounds[0][1], bounds[0][0]]
+//                 ]
+//             ]);
+//         });
+
+//         const mergedNoise = turf.union(turf.featureCollection(turfPolygonsNoise));
+
+//         if (currentPolygonNoiseLayer) {
+//             map.removeLayer(currentPolygonNoiseLayer);
+//         }
+
+//         currentPolygonNoiseLayer = L.geoJSON(mergedNoise, {
+//             color: 'yellow',
+//             weight: 1
+//         }).addTo(map);
+
+//         console.log(mergedNoise);
+//     } else {
+//         alert('Нет полигонов с помехами для объединения!');
+//     }
+
+//     // Обработка полигонов без помех
+//     if (rectanglesEllipse.length > 0) {
+//         const turfPolygonsEllipse = rectanglesEllipse.map(bounds => {
+//             return turf.polygon([
+//                 [
+//                     [bounds[0][1], bounds[0][0]],
+//                     [bounds[1][1], bounds[0][0]],
+//                     [bounds[1][1], bounds[1][0]],
+//                     [bounds[0][1], bounds[1][0]],
+//                     [bounds[0][1], bounds[0][0]]
+//                 ]
+//             ]);
+//         });
+
+//         const mergedEllipse = turf.union(turf.featureCollection(turfPolygonsEllipse));
+
+//         if (currentPolygonEllipseLayer) {
+//             map.removeLayer(currentPolygonEllipseLayer);
+//         }
+
+//         currentPolygonEllipseLayer = L.geoJSON(mergedEllipse, {
+//             color: 'green',
+//             weight: 1
+//         }).addTo(map);
+
+//         console.log(mergedEllipse);
+//     } else {
+//         alert('Нет полигонов для объединения!');
+//     }
+// });
+
+
+const polygonLayers = {
+    main: { color: 'red', storage: [], currentLayer: null, url: 'coordinates.json' },
+    noise: { color: 'yellow', storage: [], currentLayer: null, url: 'coordinates_pomexa.json' },
+    ellipse: { color: 'green', storage: [], currentLayer: null, url: 'coordinates_ellipse.json' }
+};
+
+let scaleSize = null;
+
+async function loadScale() {
+    if (!scaleSize) {
+        const response = await fetch('scale.json');
+        const data = await response.json();
+        scaleSize = data.size;
+    }
+    return scaleSize;
+}
+
+async function loadCoordinates(type) {
+    const size = await loadScale();
+    const config = polygonLayers[type];
+
+    const response = await fetch(config.url);
     const data = await response.json();
-    rectangles.length = 0;
+    config.storage.length = 0;
 
     data.forEach(coord => {
         const lat = coord.latitude;
         const lng = coord.longitude;
-
         const lngOffset = size / Math.cos(lat * (Math.PI / 180));
-        const bounds = [
+
+        config.storage.push([
             [lat + size, lng - lngOffset],
             [lat - size, lng + lngOffset]
-        ];
-        rectangles.push(bounds);
+        ]);
     });
 }
 
-async function loadCoordinatesNoise() {
-    // Считываем значение size из scale.json
-    const scaleResponse = await fetch('scale.json');
-    const scaleData = await scaleResponse.json();
-    const size = scaleData.size; // Получаем значение size
+function createMergedPolygon(boundsArray, color) {
+    if (boundsArray.length === 0) return null;
 
-    const response = await fetch('coordinates_pomexa.json');
-    const data = await response.json();
-    rectanglesNoise.length = 0;
-
-    data.forEach(coord => {
-        const lat = coord.latitude;
-        const lng = coord.longitude;
-
-        const lngOffset = size / Math.cos(lat * (Math.PI / 180));
-        const bounds = [
-            [lat + size, lng - lngOffset],
-            [lat - size, lng + lngOffset]
-        ];
-        rectanglesNoise.push(bounds);
+    const turfPolygons = boundsArray.map(bounds => {
+        return turf.polygon([
+            [
+                [bounds[0][1], bounds[0][0]],
+                [bounds[1][1], bounds[0][0]],
+                [bounds[1][1], bounds[1][0]],
+                [bounds[0][1], bounds[1][0]],
+                [bounds[0][1], bounds[0][0]]
+            ]
+        ]);
     });
+
+    return turf.union(turf.featureCollection(turfPolygons));
 }
 
-async function loadCoordinatesEllipse() {
-    // Считываем значение size из scale.json
-    const scaleResponse = await fetch('scale.json');
-    const scaleData = await scaleResponse.json();
-    const size = scaleData.size; // Получаем значение size
-
-    const response = await fetch('coordinates_ellipse.json');
-    const data = await response.json();
-    rectanglesEllipse.length = 0;
-
-    data.forEach(coord => {
-        const lat = coord.latitude;
-        const lng = coord.longitude;
-
-        const lngOffset = size / Math.cos(lat * (Math.PI / 180));
-        const bounds = [
-            [lat + size, lng - lngOffset],
-            [lat - size, lng + lngOffset]
-        ];
-        rectanglesEllipse.push(bounds);
-    });
-}
-
-// Обработчик события для кнопки "Show"
 document.getElementById('show').addEventListener('click', async function() {
+    // Загружаем все координаты параллельно
+    await Promise.all([
+        loadCoordinates('main'),
+        loadCoordinates('noise'),
+        loadCoordinates('ellipse')
+    ]);
 
-    await loadCoordinates(); // Загружаем новые координаты для полигонов
-    await loadCoordinatesNoise(); // Загружаем новые координаты для полигонов с помехами
-    await loadCoordinatesEllipse();
+    // Обрабатываем каждый тип полигонов
+    for (const [type, config] of Object.entries(polygonLayers)) {
+        if (config.storage.length > 0) {
+            const merged = createMergedPolygon(config.storage, config.color);
 
-    // Обработка полигонов без помех
-    if (rectangles.length > 0) {
-        const turfPolygons = rectangles.map(bounds => {
-            return turf.polygon([
-                [
-                    [bounds[0][1], bounds[0][0]],
-                    [bounds[1][1], bounds[0][0]],
-                    [bounds[1][1], bounds[1][0]],
-                    [bounds[0][1], bounds[1][0]],
-                    [bounds[0][1], bounds[0][0]]
-                ]
-            ]);
-        });
+            if (config.currentLayer) {
+                map.removeLayer(config.currentLayer);
+            }
 
-        const merged = turf.union(turf.featureCollection(turfPolygons));
-
-        if (currentPolygonLayer) {
-            map.removeLayer(currentPolygonLayer);
+            if (merged) {
+                config.currentLayer = L.geoJSON(merged, {
+                    color: config.color,
+                    weight: 1
+                }).addTo(map);
+            }
+        } else {
+            console.warn(`Нет полигонов типа ${type} для объединения!`);
         }
-
-        currentPolygonLayer = L.geoJSON(merged, {
-            color: 'red',
-            weight: 1
-        }).addTo(map);
-
-        console.log(merged);
-    } else {
-        alert('Нет полигонов для объединения!');
-    }
-
-    // Обработка полигонов с помехами
-    if (rectanglesNoise.length > 0) {
-        const turfPolygonsNoise = rectanglesNoise.map(bounds => {
-            return turf.polygon([
-                [
-                    [bounds[0][1], bounds[0][0]],
-                    [bounds[1][1], bounds[0][0]],
-                    [bounds[1][1], bounds[1][0]],
-                    [bounds[0][1], bounds[1][0]],
-                    [bounds[0][1], bounds[0][0]]
-                ]
-            ]);
-        });
-
-        const mergedNoise = turf.union(turf.featureCollection(turfPolygonsNoise));
-
-        if (currentPolygonNoiseLayer) {
-            map.removeLayer(currentPolygonNoiseLayer);
-        }
-
-        currentPolygonNoiseLayer = L.geoJSON(mergedNoise, {
-            color: 'yellow',
-            weight: 1
-        }).addTo(map);
-
-        console.log(mergedNoise);
-    } else {
-        alert('Нет полигонов с помехами для объединения!');
-    }
-
-    // Обработка полигонов без помех
-    if (rectanglesEllipse.length > 0) {
-        const turfPolygonsEllipse = rectanglesEllipse.map(bounds => {
-            return turf.polygon([
-                [
-                    [bounds[0][1], bounds[0][0]],
-                    [bounds[1][1], bounds[0][0]],
-                    [bounds[1][1], bounds[1][0]],
-                    [bounds[0][1], bounds[1][0]],
-                    [bounds[0][1], bounds[0][0]]
-                ]
-            ]);
-        });
-
-        const mergedEllipse = turf.union(turf.featureCollection(turfPolygonsEllipse));
-
-        if (currentPolygonEllipseLayer) {
-            map.removeLayer(currentPolygonEllipseLayer);
-        }
-
-        currentPolygonEllipseLayer = L.geoJSON(mergedEllipse, {
-            color: 'green',
-            weight: 1
-        }).addTo(map);
-
-        console.log(mergedEllipse);
-    } else {
-        alert('Нет полигонов для объединения!');
     }
 });
