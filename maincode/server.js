@@ -87,6 +87,25 @@ app.post('/api/getElevation', (req, res) => {
     });
 });
 
+app.post('/save-polygon', (req, res) => {
+    const polygon = req.body.polygon;
+
+    if (!polygon || !Array.isArray(polygon)) {
+        return res.status(400).json({ error: 'Некорректные данные' });
+    }
+
+    const filePath = path.join(__dirname, 'poly.json');
+    fs.writeFile(filePath, JSON.stringify(polygon, null, 2), (err) => {
+        if (err) {
+            console.error('Ошибка при сохранении файла:', err);
+            return res.status(500).json({ error: 'Ошибка сервера' });
+        }
+
+        console.log('Полигон сохранён в poly.json');
+        res.json({ success: true });
+    });
+});
+
 app.post('/save', (req, res) => {
     const data = req.body; // Получаем данные из запроса
     console.log('Полученные данные:', data);
