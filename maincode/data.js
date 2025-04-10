@@ -369,7 +369,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if ((selectedValues.Azimuth <= -1 || selectedValues.Azimuth >= 360) ||
             (selectedValues.Power <= 0 || selectedValues.Power >= 2000) ||
             (selectedValues.Width <= 0 || selectedValues.Width >= 360) ||
-            (selectedValues.ksi <= 0 || selectedValues.ksi >= 91)) {
+            (selectedValues.ksi <= -1 || selectedValues.ksi >= 91)) {
             alert("Введены некоректные значения");
             return; // Прерываем выполнение функции, если значения некорректные 
         }

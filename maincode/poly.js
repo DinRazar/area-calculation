@@ -114,31 +114,31 @@ map.on('contextmenu', function(e) {
 });
 
 // Удалить последнюю точку по Shift + ЛКМ
-function onMapClickToDrawPolygon(e) {
-    if (!isDrawingPolygon) return;
+// function onMapClickToDrawPolygon(e) {
+//     if (!isDrawingPolygon) return;
 
-    if (e.originalEvent.shiftKey) {
-        if (polygonLatLngs.length === 0) return;
+//     if (e.originalEvent.shiftKey) {
+//         if (polygonLatLngs.length === 0) return;
 
-        polygonLatLngs.pop();
-        if (polygonLatLngs.length === 0) {
-            if (drawnPolygon) {
-                map.removeLayer(drawnPolygon);
-                drawnPolygon = null;
-            }
-        } else {
-            drawnPolygon.setLatLngs(polygonLatLngs);
-        }
-        return;
-    }
+//         polygonLatLngs.pop();
+//         if (polygonLatLngs.length === 0) {
+//             if (drawnPolygon) {
+//                 map.removeLayer(drawnPolygon);
+//                 drawnPolygon = null;
+//             }
+//         } else {
+//             drawnPolygon.setLatLngs(polygonLatLngs);
+//         }
+//         return;
+//     }
 
-    // Обычное добавление точки
-    var latlng = e.latlng;
-    polygonLatLngs.push(latlng);
+//     // Обычное добавление точки
+//     var latlng = e.latlng;
+//     polygonLatLngs.push(latlng);
 
-    if (drawnPolygon) {
-        drawnPolygon.setLatLngs(polygonLatLngs);
-    } else {
-        drawnPolygon = L.polygon(polygonLatLngs, { color: 'blue' }).addTo(map);
-    }
-}
+//     if (drawnPolygon) {
+//         drawnPolygon.setLatLngs(polygonLatLngs);
+//     } else {
+//         drawnPolygon = L.polygon(polygonLatLngs, { color: 'blue' }).addTo(map);
+//     }
+// }
