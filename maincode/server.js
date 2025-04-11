@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const { spawn } = require('child_process');
+const { execFile } = require('child_process');
 const multer = require('multer');
 const app = express();
 const PORT = 3000;
@@ -135,6 +136,16 @@ app.get('/data.json', (req, res) => {
 //     console.log('Считываем данные из файла');
 //     res.json(dataCache);
 // });
+
+// Эндпоинт для выполнения бинарника
+app.post('/run-binary', (req, res) => {
+    execFile('./Map', (error, stdout, stderr) => {
+        if (error) {
+            return res.status(500).json({ error: error.message });
+        }
+        res.json({ output: stdout, error: stderr });
+    });
+});
 
 // Открытие index.html по пути http://localhost:3000/
 app.get('/', (req, res) => {

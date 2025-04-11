@@ -275,6 +275,15 @@ function createMergedPolygon(boundsArray, color) {
 
 // Загрузка координат
 document.getElementById('show').addEventListener('click', async function() {
+    try {
+        const response = await fetch('http://localhost:3000/run-binary', {
+            method: 'POST',
+        });
+        const result = await response.json();
+        console.log('Результат:', result.output);
+    } catch (error) {
+        console.error('Ошибка:', error);
+    }
     await Promise.all([
         loadCoordinates('main'),
         loadCoordinates('noise'),
