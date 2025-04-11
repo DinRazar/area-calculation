@@ -1,16 +1,15 @@
 const express = require('express');
-const fs = require('fs'); // Импорт модуля fs
+const fs = require('fs');
 const xlsx = require('xlsx');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const { spawn } = require('child_process');
-// const { exec } = require('child_process');
-const multer = require('multer'); // Импор модуля multer
+const multer = require('multer');
 const app = express();
 const PORT = 3000;
 
-app.use(cors()); // Разрешаем CORS для взаимодействия с клиентом
+app.use(cors()); // CORS для взаимодействия с API
 app.use(express.static(path.join(__dirname)));
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
@@ -25,12 +24,13 @@ const storage = multer.diskStorage({
     },
 });
 
+// Взаимодействие с большими по объему файлами для избежания ошибок
 const upload = multer({ storage: storage, imits: { fileSize: 10 * 1024 * 1024 } });
 
-// Кеш для данных
+// Кеш для данных (не уверен, что мы вообще это использкем \0_0/)
 let dataCache = null;
 
-// Эндпоинт для загрузки файла
+// Эндпоинт для загрузки файла (вообще не используется, но по хорошему надо потом это настроить)
 app.post('/uploads', upload.single('file'), (req, res) => {
     if (!req.file) {
         return res.status(400).json({ status: 'error', message: 'Файл не загружен' });
@@ -39,27 +39,27 @@ app.post('/uploads', upload.single('file'), (req, res) => {
     res.json({ status: 'success', message: 'Файл успешно загружен' });
 });
 
-// Эндпоинт для получения coordinates.json
+// Эндпоинт для получения coordinates.json (красный круг)
 app.get('/coordinates.json', (req, res) => {
     res.sendFile(path.join(__dirname, 'coordinates.json'));
 });
 
-// Эндпоинт для получения coordinates_pomexa.json
+// Эндпоинт для получения coordinates_pomexa.json (жёлтый круг)
 app.get('/coordinates_pomexa.json', (req, res) => {
     res.sendFile(path.join(__dirname, 'coordinates_pomexa.json'));
 });
 
-// Эндпоинт для получения coordinates_ellipse.json
+// Эндпоинт для получения coordinates_ellipse.json (зелёный эллипс)
 app.get('/coordinates_ellipse.json', (req, res) => {
     res.sendFile(path.join(__dirname, 'coordinates_ellipse.json'));
 });
 
+// Эндпоинт для получения значений масштаба
 app.get('/scale.json', (req, res) => {
     res.sendFile(path.join(__dirname, 'scale.json'));
 });
 
 // Чтение данных из Excel и конвертация в JSON
-
 app.get('/data', (req, res) => {
     const workbook = xlsx.readFile('sput.xlsx');
     const sheetName = workbook.SheetNames[0]; // Используем первый лист
@@ -87,6 +87,7 @@ app.post('/api/getElevation', (req, res) => {
     });
 });
 
+// Место для работы с полигонами (потом будет сильно меняться и дорабатываться)
 app.post('/save-polygon', (req, res) => {
     const polygon = req.body.polygon;
 
@@ -113,7 +114,6 @@ app.post('/save', (req, res) => {
     fs.writeFileSync('data.json', JSON.stringify(data, null, 2)); // Сохранения в файл json
     // Обновляем кеш
     dataCache = data; // Сохраняем данные в кеш
-
     res.json({ status: 'success', message: 'Данные сохранены' });
 });
 
@@ -121,6 +121,7 @@ app.post('/save', (req, res) => {
 app.get('/data.json', (req, res) => {
     res.sendFile(path.join(__dirname, 'data.json'));
 });
+
 // // Эндпоинт для получения данных из кеша или файла
 // app.get('/data', (req, res) => {
 //     if (dataCache) {
@@ -135,7 +136,7 @@ app.get('/data.json', (req, res) => {
 //     res.json(dataCache);
 // });
 
-
+// Открытие index.html по пути http://localhost:3000/
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'))
 });
