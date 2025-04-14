@@ -243,15 +243,19 @@ async function loadCoordinates(type) {
     const response = await fetch(config.url);
     const data = await response.json();
     config.storage.length = 0;
-    data.forEach(coord => {
-        const lat = coord.latitude;
-        const lng = coord.longitude;
-        const lngOffset = size / Math.cos(lat * (Math.PI / 180));
-        config.storage.push([
-            [lat + size, lng - lngOffset],
-            [lat - size, lng + lngOffset]
-        ]);
-    });
+
+    // Only process if there are coordinates
+    if (data && data.length > 0) {
+        data.forEach(coord => {
+            const lat = coord.latitude;
+            const lng = coord.longitude;
+            const lngOffset = size / Math.cos(lat * (Math.PI / 180));
+            config.storage.push([
+                [lat + size, lng - lngOffset],
+                [lat - size, lng + lngOffset]
+            ]);
+        });
+    }
 }
 
 function createMergedPolygon(boundsArray, color) {
@@ -284,6 +288,7 @@ document.getElementById('show').addEventListener('click', async function() {
     } catch (error) {
         console.error('Ошибка:', error);
     }
+
     await Promise.all([
         loadCoordinates('main'),
         loadCoordinates('noise'),
@@ -292,13 +297,15 @@ document.getElementById('show').addEventListener('click', async function() {
 
     // Обработка всех типов полигонов
     for (const [type, config] of Object.entries(polygonLayers)) {
+        // Remove existing layer if it exists
+        if (config.currentLayer) {
+            map.removeLayer(config.currentLayer);
+            config.currentLayer = null;
+        }
+
+        // Only create new layer if there are polygons to show
         if (config.storage.length > 0) {
             const merged = createMergedPolygon(config.storage, config.color);
-
-            if (config.currentLayer) {
-                map.removeLayer(config.currentLayer);
-            }
-
             if (merged) {
                 config.currentLayer = L.geoJSON(merged, {
                     color: config.color,
@@ -306,7 +313,7 @@ document.getElementById('show').addEventListener('click', async function() {
                 }).addTo(map);
             }
         } else {
-            console.warn(`Нет полигонов типа ${type} для объединения!`);
+            console.log(`Нет данных для отображения полигонов типа ${type}`);
         }
     }
 });
