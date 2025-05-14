@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="ru">
 
 <head>
@@ -155,12 +155,203 @@
         </div>
     </div>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="./main.js"></script>
+    <script src="./data.js"></script>
+    <script src="./poly.js"></script>
+</body>
+
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>area-calculation</title>
+    <script src="./libs/dist/leaflet.js"></script>
+    <script src="./libs/dist/leaflet-measure.js"></script>
+    <script src="./libs/dist/turf.min.js"></script>
+    <link rel="stylesheet" href="./libs/dist/leaflet.css">
+    <link rel="stylesheet" href="./libs/dist/leaflet-measure.css">
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div id="all">
+        <div id="mapandControls">
+            <div id="controls">
+                <div>
+                    <label for="dataDropdown">Выберите спутник :</label><br>
+                    <select id="dataDropdown" class="styled-dropdown">
+                <option value="" disabled selected hidden> Выберите спутник </option>
+            </select>
+                </div>
+                <div id="mainCalculation">
+                    <div>
+                        <label for="dataStandard">Стандарт вещания:</label><br>
+                        <select id="dataStandard" class="styled-dropdown">
+                            <option value="" disabled selected hidden> Выберите стандарт вещания </option>
+                            <option value="dvbs">DVB-S</option>
+                            <option value="dvbs2">DVB-S2</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="inputFrec">Частота вещания [Ггц]:</label><br>
+                        <input type="number" id="inputFrec">
+                    </div>
+                    <div>
+                        <label for="dataPolarization">Поляризация:</label><br>
+                        <select id="dataPolarization" class="styled-dropdown">
+                            <option value="" disabled selected hidden> Выберите поляризацию </option>
+                            <option value="V">Линейная вертикальная</option>
+                            <option value="H">Линейная горизонтальная</option>
+                            <option value="r">Круговая правая</option>
+                            <option value="L">Круговая левая</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="dataModulation">Тип модуляции:</label><br>
+                        <select id="dataModulation" class="styled-dropdown">
+                            <option value="" disabled selected hidden> Выберите тип модуляции </option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="dataSpeed">Кодовая скорость:</label><br>
+                        <select id="dataSpeed" class="styled-dropdown">
+                            <option value="" disabled selected hidden> Выберите кодовую скорость </option>
+                        </select>
+                    </div>
+                    <div id=D rawButton>
+                        <button id="applyButton">Применить</button>
+                        <button id="show">Нарисовать</button>
+                    </div>
+                </div>
+            </div>
+            <div id="map">
+                <div class="button-group">
+                    <button id="offlineBtn">Оффлайн</button>
+                    <button id="onlineBtn">Онлайн</button>
+                </div>
+                <div class="button-group2">
+                    <button id="ZoneBtn">Отметить зоны</button>
+                    <div id="zone-menu" style="display: none;">
+                        <button id="draw-polygon">Нарисовать полигон</button>
+                        <button id="send-polygon">Отправить</button>
+                        <button id="erase-polygon">Стереть полигон</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="secondCalculation">
+            <div>
+                <label for="inputLat">Широта [град]:</label><br>
+                <input type="number" id="inputLat">
+            </div>
+            <div>
+                <label for="inputLng">Долгота [град]:</label><br>
+                <input type="number" id="inputLng">
+            </div>
+            <div>
+                <label for="inputHeightSeaLevel">Высота над уровнем моря [м]:</label><br>
+                <input type="number" id="inputHeightSeaLevel">
+            </div>
+            <div>
+                <label for="inputHeight">Высота подъёма над уровнем земли [м]:</label><br>
+                <input type="number" id="inputHeight">
+            </div>
+            <div>
+                <label for="inputAzim">Азимут направления главного лепестка [град]:</label><br>
+                <input type="number" id="inputAzim" min="0" max="360" required>
+                <span></span>
+            </div>
+            <div>
+                <label for="inputKSI">Угол подъёма антенны [град]:</label>
+                <input type="number" id="inputKSI" value="30" min="0" max="91" step="0.1" required>
+                <span></span>
+            </div>
+            <div>
+                <label for="dataStand"> Стандарт вещания :</label><br>
+                <select id="dataStand" class="styled-dropdown">
+                    <option value="" disabled selected hidden> Выберите стандарт вещания </option>
+                    <option value="dvbs">DVB-S</option>
+                    <option value="dvbs2">DVB-S2</option>
+                </select>
+            </div>
+            <div>
+                <label for="inputFrec1">Частота вещания [Ггц]: </label><br>
+                <input type="number" id="inputFrec1">
+            </div>
+
+            <!-- Добавляем кнопку для сворачивания/разворачивания -->
+            <button id="toggleParams" class="toggle-button">▶ Дополнительные параметры</button>
+
+            <!-- Обернём остальные параметры в collapsible блок -->
+            <div id="additionalParams" class="collapsible-content">
+                <div>
+                    <label for="dataPol"> Поляризация:</label><br>
+                    <select id="dataPol" class="styled-dropdown">
+                        <option value="" disabled selected hidden> Выберите поляризацию </option>
+                        <option value="L">Круговая левая</option>
+                        <option value="R">Круговая правая</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="dataMod"> Тип модуляции:</label><br>
+                    <select id="dataMod" class="styled-dropdown">
+                        <option value="" disabled selected hidden> Выберите тип модуляции </option>
+                    </select>
+                </div>
+                <div>
+                    <label for="dataMod"> Кодовая скорость:</label><br>
+                    <select id="dataSp" class="styled-dropdown">
+                        <option value="" disabled selected hidden> Выберите кодовую скорость </option>
+                    </select>
+                </div>
+                <div>
+                    <label for="inputPower">Мощность передатчика [Вт]:</label><br>
+                    <input type="number" id="inputPower" value="2" min="0" max="2000" required>
+                    <span></span>
+                </div>
+                <div>
+                    <label for="inputAntennaGain">Коэффициент усиления антенны [dBi]:</label>
+                    <input type="number" id="inputAntennaGain" value="20">
+                </div>
+                <div>
+                    <label for="inputWidth">Ширина главного лепестка [град]:</label><br>
+                    <input type="number" id="inputWidth" value="18" min="0" max="360" required>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <!-- Подключение скрипта с основной логикой -->
     <script src="./main.js"></script>
     <!-- Подключение скрипта с обработкой данных -->
     <script src="./data.js"></script>
     <!-- Подключение скрипта с отрисовкой полтгонов. Пока не ясно, что конкретно в нём должно быть -->
     <script src="./poly.js"></script>
+
+    <script>
+        // Добавляем обработчик для кнопки сворачивания/разворачивания
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleButton = document.getElementById('toggleParams');
+            const additionalParams = document.getElementById('additionalParams');
+
+            toggleButton.addEventListener('click', function() {
+                additionalParams.classList.toggle('expanded');
+
+                // Меняем текст кнопки в зависимости от состояния
+                if (additionalParams.classList.contains('expanded')) {
+                    toggleButton.textContent = '▼ Дополнительные параметры';
+                } else {
+                    toggleButton.textContent = '▶ Дополнительные параметры';
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
