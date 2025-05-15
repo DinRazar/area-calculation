@@ -285,10 +285,10 @@
             </div>
 
             <!-- Добавляем кнопку для сворачивания/разворачивания -->
-            <button id="toggleParams" class="toggle-button">▶ Дополнительные параметры</button>
+            <button id="toggleParams" class="toggle-button"> Дополнительные параметры ▼</button>
 
             <!-- Обернём остальные параметры в collapsible блок -->
-            <div id="additionalParams" class="collapsible-content">
+            <div id="additionalParams" class="collapsible-content ">
                 <div>
                     <label for="dataPol"> Поляризация:</label><br>
                     <select id="dataPol" class="styled-dropdown">
@@ -345,9 +345,9 @@
 
                 // Меняем текст кнопки в зависимости от состояния
                 if (additionalParams.classList.contains('expanded')) {
-                    toggleButton.textContent = '▼ Дополнительные параметры';
+                    toggleButton.textContent = ' Дополнительные параметры ▶';
                 } else {
-                    toggleButton.textContent = '▶ Дополнительные параметры';
+                    toggleButton.textContent = ' Дополнительные параметры ▼';
                 }
             });
         });

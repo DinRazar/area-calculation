@@ -270,3 +270,14 @@ input[type='number'] {
     max-height: 1000px;
     /* Достаточно большое значение для вмещения всего содержимого */
 }
+
+.toggle-button {
+    margin: 10px 0;
+    padding: 8px;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 14px;
+}
