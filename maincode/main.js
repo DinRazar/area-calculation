@@ -118,6 +118,10 @@ inputLng.addEventListener('keydown', function(e) {
 
 // Создание маркера по клику на карте
 map.on('click', function(e) {
+    if (rulerTool.isActive) {
+        return // ВОТ ВСЁ ЧТО Я ДОБАВИЛ, ХАХАХХХАХАХАХАХ. ЭТО ДЕЙСТВИТЕЛЬНО ФИКСАНУЛУ ПРОБЛЕМУ, КТО БЫ МОГ ПОДУМАТЬ
+    }
+
     const lat = e.latlng.lat;
     const lng = e.latlng.lng;
 
@@ -162,7 +166,6 @@ map.on('click', function(e) {
 window.addEventListener('DOMContentLoaded', () => {
     const lat = parseFloat(inputLat.value);
     const lng = parseFloat(inputLng.value);
-
     if (!isNaN(lat) && !isNaN(lng)) {
         updateMarkerFromInputs();
     }
@@ -182,7 +185,7 @@ fetch('http://localhost:3000/data')
             dropdown.appendChild(option);
         });
 
-        // Короче тут какой-то баг, я хз что тут не так, он вроде ничего не ломает, он просто есть
+        // Короче тут какой-то баг, я хз что тут не так, он вроде ничего не ломает, он просто есть (это не баг, это просто непонятно что)
         dropdown.addEventListener('change', (event) => {
             try {
                 const selectedOption = event.target.selectedOptions[0];
@@ -217,22 +220,17 @@ const polygonLayers = {
     main: { color: 'red', storage: [], currentLayer: null, url: 'coordinates.json' },
     noise: { color: 'yellow', storage: [], currentLayer: null, url: 'coordinates_pomexa.json' },
     ellipse: { color: 'green', storage: [], currentLayer: null, url: 'coordinates_ellipse.json' }
+    // circle: { color: 'blue', storage: [], currentLayer: null, url: 'coordinates_circle.json' },
 };
 
-let scaleSizes = null;
-
 async function loadScale() {
-    if (!scaleSizes) {
-        const response = await fetch('scale.json');
-        const data = await response.json();
-
-        // Получение размеров 
-        scaleSizes = {
-            size1: data[0].size1,
-            size2: data[1].size2
-        };
+    const response = await fetch('scale.json');
+    const data = await response.json();
+    return {
+        size1: data[0].size1,
+        size2: data[1].size2,
+        // size3: data[2].size3,
     }
-    return scaleSizes;
 }
 
 // Функция создания полигонов из точчек
@@ -240,11 +238,18 @@ async function loadCoordinates(type) {
     const sizes = await loadScale();
     const config = polygonLayers[type];
     const size = (type === 'ellipse') ? sizes.size2 : sizes.size1; // Выбираем размер в зависимости от типа
+
+    // if (type === 'ellipse') {
+    //     sizes = sizes.size2;
+    // } else if (type === 'circle') {
+    //     sizes = sizes.size2;
+    // } else {
+    //     sizes = sizes.size3;
+    // }
+
     const response = await fetch(config.url);
     const data = await response.json();
     config.storage.length = 0;
-
-    // Only process if there are coordinates
     if (data && data.length > 0) {
         data.forEach(coord => {
             const lat = coord.latitude;
@@ -260,7 +265,6 @@ async function loadCoordinates(type) {
 
 function createMergedPolygon(boundsArray, color) {
     if (boundsArray.length === 0) return null;
-
     const turfPolygons = boundsArray.map(bounds => {
         return turf.polygon([
             [
@@ -273,7 +277,6 @@ function createMergedPolygon(boundsArray, color) {
             ]
         ]);
     });
-
     return turf.union(turf.featureCollection(turfPolygons));
 }
 
@@ -293,17 +296,15 @@ document.getElementById('show').addEventListener('click', async function() {
         loadCoordinates('main'),
         loadCoordinates('noise'),
         loadCoordinates('ellipse')
+        // loadCoordinates('circle')
     ]);
 
     // Обработка всех типов полигонов
     for (const [type, config] of Object.entries(polygonLayers)) {
-        // Remove existing layer if it exists
         if (config.currentLayer) {
             map.removeLayer(config.currentLayer);
             config.currentLayer = null;
         }
-
-        // Only create new layer if there are polygons to show
         if (config.storage.length > 0) {
             const merged = createMergedPolygon(config.storage, config.color);
             if (merged) {

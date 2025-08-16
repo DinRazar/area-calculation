@@ -137,7 +137,19 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     });
-    // Установка значений по умолчанию
+
+    // Функция для изменения значения "Помехи" в зависимости от выбранного стандарта наземного вещания
+    dataStandSelect.addEventListener('change', function() {
+            const inputP_pomexa = document.getElementById('inputP_pomexa');
+            const selected = this.value;
+            if (selected === 'dvbs') {
+                inputP_pomexa.value = '4';
+            } else if (selected === 'dvbs2') {
+                inputP_pomexa.value = '2';
+            }
+            updateSelectedValues();
+        })
+        // Установка значений по умолчанию
     dataStandSelect.value = 'dvbs2'; // Выбор стандарта DVB-S2
     dataStandSelect.dispatchEvent(new Event('change')); // Вызываем событие изменения, чтобы заполнить speed и modulation
     dataSpSelect.value = '1/2'; // Установка кодовой скорости по умолчанию
@@ -150,8 +162,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const dataSpeedSelect = document.getElementById('dataSpeed');
     const dataModulationSelect = document.getElementById('dataModulation');
     const dataPolarizationSelect = document.getElementById('dataPolarization');
+
     const inputFrec = document.getElementById('inputFrec');
     const inputFrec1 = document.getElementById('inputFrec1');
+
+    // inputFrec.value = 11;
+    // inputFrec1.value = 11;
+
     const inputLat = document.getElementById('inputLat');
     const inputLng = document.getElementById('inputLng');
     const inputPower = document.getElementById('inputPower');
@@ -167,6 +184,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputKSI = document.getElementById('inputKSI');
     const dataDropdown = document.getElementById('dataDropdown');
 
+    const inputP_pomexa = document.getElementById('inputP_pomexa');
+    const inputL_pol = document.getElementById('inputL_pol');
+    const inputL_fider = document.getElementById('inputL_fider');
+    const inputEinm = document.getElementById('inputEinm');
+
+    const option_1 = document.getElementById('option1');
+    const option_2 = document.getElementById('option2');
+    const option_3 = document.getElementById('option3');
+    const option_4 = document.getElementById('option4');
+
     // Загружаем JSON данные
     fetch('http://localhost:3000/data.json')
         .then(response => response.json())
@@ -176,8 +203,6 @@ document.addEventListener('DOMContentLoaded', () => {
             dataSpeedSelect.value = data.speed;
             dataModulationSelect.value = data.modulation;
             dataPolarizationSelect.value = data.polarization;
-            // inputFrec.value = data.frequency;
-            // inputFrec1.value = data.frequency1;
             inputLat.value = data.latitude;
             inputLng.value = data.longitude;
             inputPower.value = data.Power;
@@ -191,6 +216,14 @@ document.addEventListener('DOMContentLoaded', () => {
             dataModSelect.value = data.Mod;
             inputHeightSeaLevel.value = data.HeightSeaLevel;
             inputKSI.value = data.ksi;
+
+            inputP_pomexa.value = data.P_pomexa;
+            inputL_pol.value = data.L_pol;
+            inputL_fider.value = data.L_fider;
+            inputEinm.value = data.Einm;
+
+            // inputFrec.value = data.frequency;
+            // inputFrec1.value = data.frequency1;
 
             // Установим долготу спутника
             satelliteLongitude = data.satelliteLongitude;
@@ -250,7 +283,6 @@ document.addEventListener('DOMContentLoaded', () => {
         dataModulationSelect.value = data.modulation;
     }
 
-
     // Объект для хранения выбранных значений
     let selectedValues = {
         standard: '',
@@ -272,8 +304,19 @@ document.addEventListener('DOMContentLoaded', () => {
         Stand: '',
         Sp: '',
         Mod: '',
-        ksi: ''
+        ksi: '',
+
+        P_pomexa: '',
+        L_pol: '',
+        L_fider: '',
+        Einm: '',
+
+        option_1: '',
+        option_2: '',
+        option_3: '',
+        option_4: '',
     };
+
 
     // Функция для обновления выбранных значений
     function updateSelectedValues() {
@@ -281,9 +324,11 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedValues.speed = dataSpeedSelect.value;
         selectedValues.modulation = dataModulationSelect.value;
         selectedValues.polarization = dataPolarizationSelect.value;
+
         selectedValues.frequency = inputFrec.value;
         selectedValues.frequency1 = inputFrec1.value;
         selectedValues.latitude = inputLat.value;
+
         selectedValues.longitude = inputLng.value;
         selectedValues.Power = inputPower.value;
         selectedValues.AntennaGain = inputAntennaGain.value;
@@ -296,9 +341,19 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedValues.Sp = dataSpSelect.value;
         selectedValues.Mod = dataModSelect.value;
         selectedValues.ksi = inputKSI.value;
+
+        selectedValues.P_pomexa = inputP_pomexa.value;
+        selectedValues.L_pol = inputL_pol.value;
+        selectedValues.L_fider = inputL_fider.value;
+        selectedValues.Einm = inputEinm.value;
+
+        selectedValues.option_1 = option_1.checked ? '1' : '0';
+        selectedValues.option_2 = option_2.checked ? '1' : '0';
+        selectedValues.option_3 = option_3.checked ? '1' : '0';
+        selectedValues.option_4 = option_4.checked ? '1' : '0';
     }
 
-    // ахахаха не работает \0_0/ //
+    // ахахаха не работает \0_0/ 
 
     // Загрузка данных с сервера
     fetch('http://localhost:3000/data')
@@ -326,7 +381,6 @@ document.addEventListener('DOMContentLoaded', () => {
     dataSpeedSelect.addEventListener('change', updateSelectedValues); //Кодовая скорость
     dataModulationSelect.addEventListener('change', updateSelectedValues); //Тип модуляции
     dataPolarizationSelect.addEventListener('change', updateSelectedValues); //Поляризация
-    inputFrec.addEventListener('input', updateSelectedValues); //Частота вещания 
     inputPower.addEventListener('input', updateSelectedValues); //Мощность передатчика
     inputAntennaGain.addEventListener('input', updateSelectedValues); //Коэффициент усиления антенны
     inputLat.addEventListener('input', updateSelectedValues); //Широта точки
@@ -334,7 +388,10 @@ document.addEventListener('DOMContentLoaded', () => {
     inputWidth.addEventListener('input', updateSelectedValues); //Ширина главного лепестка
     inputHeight.addEventListener('input', updateSelectedValues); //Высота подъёма над уровнем земли
     inputAzim.addEventListener('input', updateSelectedValues); //Азимут направления главного лепестка
-    inputFrec1.addEventListener('input', updateSelectedValues); //Частота вещания
+
+    inputFrec.addEventListener('change', updateSelectedValues); //Частота вещания 
+    inputFrec1.addEventListener('change', updateSelectedValues); //Частота вещания
+
     dataPolSelect.addEventListener('input', updateSelectedValues); //Частота вещания тоже
     dataStandSelect.addEventListener('change', updateSelectedValues); //Кодовая скорость
     dataSpSelect.addEventListener('change', updateSelectedValues); //Кодовая скорость но другая
@@ -342,6 +399,16 @@ document.addEventListener('DOMContentLoaded', () => {
     inputHeightSeaLevel.addEventListener('input', updateSelectedValues); //Высота над уровнем моря
     inputKSI.addEventListener('input', updateSelectedValues); //Угол подъёма антенны
 
+    // inputP_pomexa.addEventListener('input', updateSelectedValues);
+    inputP_pomexa.addEventListener('change', updateSelectedValues);
+    inputL_pol.addEventListener('input', updateSelectedValues);
+    inputL_fider.addEventListener('input', updateSelectedValues);
+    inputEinm.addEventListener('change', updateSelectedValues);
+
+    option_1.addEventListener('change', updateSelectedValues);
+    option_2.addEventListener('change', updateSelectedValues);
+    option_3.addEventListener('change', updateSelectedValues);
+    option_4.addEventListener('change', updateSelectedValues);
 
     // Обработчик для кнопки "Применить"
     applyButton.addEventListener('click', () => {
@@ -358,8 +425,8 @@ document.addEventListener('DOMContentLoaded', () => {
             !selectedValues.Width || !selectedValues.Hight ||
             !selectedValues.Azimuth || !selectedValues.Pol ||
             !selectedValues.Stand || !selectedValues.Sp ||
-            !selectedValues.Mod || !selectedValues.HeightSeaLevel || !selectedValues.ksi
-            // || !selectedValues.frequency1 || !selectedValues.frequency
+            !selectedValues.Mod || !selectedValues.HeightSeaLevel || !selectedValues.ksi ||
+            !selectedValues.Einm
         ) {
             alert("Пожалуйста, заполните все обязательные поля.");
             return; // Прерываем выполнение функции, если  поля не заполнены
@@ -375,15 +442,25 @@ document.addEventListener('DOMContentLoaded', () => {
         if ((selectedValues.Azimuth <= -1 || selectedValues.Azimuth >= 360) ||
             (selectedValues.Power <= 0 || selectedValues.Power >= 2000) ||
             (selectedValues.Width <= 0 || selectedValues.Width >= 360) ||
-            (selectedValues.ksi <= -1 || selectedValues.ksi >= 91)) {
+            (selectedValues.ksi >= 91) ||
+            (selectedValues.Einm <= -1 || selectedValues.Einm >= 151)
+            // Вроде логично, ну раньше так работало, теперь не работает
+            // ||
+            // (selectedValues.latitude <= -90 || selectedValues.latitude >= 90) ||
+            // (selectedValues.longitude <= -180 || selectedValues.longitude >= 180)
+        ) {
             alert("Введены некоректные значения");
             return; // Прерываем выполнение функции, если значения некорректны 
+        }
+        if (parseFloat(selectedValues.ksi) < 0.5 * (-parseFloat(selectedValues.AntennaGain))) {
+            alert("Угол подъёма антенны должен быть больше минус половины ширины главного лепестка антены");
+            return;
         }
 
         // Обновление значений в selectedValues, если координаты не совпадают (костыль от нерабочей штуки)
         const inputLatValue = parseFloat(inputLat.value).toFixed(4);
         const inputLngValue = parseFloat(inputLng.value).toFixed(4);
-        const inputHetSeLevel = parseFloat(inputHeightSeaLevel.value);
+        const inputHetSeLevel = inputHeightSeaLevel.value;
 
         if (inputLatValue !== selectedValues.latitude ||
             inputLngValue !== selectedValues.longitude ||
@@ -391,7 +468,6 @@ document.addEventListener('DOMContentLoaded', () => {
             selectedValues.latitude = inputLatValue; // Обновляем широту
             selectedValues.longitude = inputLngValue; // Обновляем долготу
             selectedValues.HeightSeaLevel = inputHetSeLevel;
-
         }
 
         fetch('http://localhost:3000/save', {
