@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const option_1 = document.getElementById('option1');
     const option_2 = document.getElementById('option2');
     const option_3 = document.getElementById('option3');
-    const option_4 = document.getElementById('option4');
+    // const option_4 = document.getElementById('option4');
 
     // Загружаем JSON данные
     fetch('http://localhost:3000/data.json')
@@ -314,7 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
         option_1: '',
         option_2: '',
         option_3: '',
-        option_4: '',
+        // option_4: '',
     };
 
 
@@ -350,7 +350,7 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedValues.option_1 = option_1.checked ? '1' : '0';
         selectedValues.option_2 = option_2.checked ? '1' : '0';
         selectedValues.option_3 = option_3.checked ? '1' : '0';
-        selectedValues.option_4 = option_4.checked ? '1' : '0';
+        // selectedValues.option_4 = option_4.checked ? '1' : '0';
     }
 
     // ахахаха не работает \0_0/ 
@@ -408,7 +408,7 @@ document.addEventListener('DOMContentLoaded', () => {
     option_1.addEventListener('change', updateSelectedValues);
     option_2.addEventListener('change', updateSelectedValues);
     option_3.addEventListener('change', updateSelectedValues);
-    option_4.addEventListener('change', updateSelectedValues);
+    // option_4.addEventListener('change', updateSelectedValues);
 
     // Обработчик для кнопки "Применить"
     applyButton.addEventListener('click', () => {
@@ -452,7 +452,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert("Введены некоректные значения");
             return; // Прерываем выполнение функции, если значения некорректны 
         }
-        if (parseFloat(selectedValues.ksi) < 0.5 * (-parseFloat(selectedValues.AntennaGain))) {
+        if (parseFloat(selectedValues.ksi) < 0.5 * (-parseFloat(selectedValues.Width))) {
             alert("Угол подъёма антенны должен быть больше минус половины ширины главного лепестка антены");
             return;
         }

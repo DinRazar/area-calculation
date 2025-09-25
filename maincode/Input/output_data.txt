@@ -1,0 +1,21 @@
+-> lat = 55.75 grad
+-> lon = 37.6 grad
+-> lon_alt = 37.6 grad
+-> lon_sputnik = 13 grad
+-> lon_sputnik_alt = 13 grad
+-> h_S = 0.135
+
+-> phi = 25
+-> f = 11
+-> D = 0.6
+-> neta = 0.65
+-> p = 0.05 % 
+
+[A_res = 2.4093 dB; 2.622683 dB]
+
+-> polarization = V
+A_res = 2.4093 dB
+
+-> polarization = L
+A_res = 2.62268 dB
+

@@ -1,0 +1,35 @@
+{
+  "option_1": "1",
+  "option_2": "1",
+  "option_3": "1",
+  "option_4": "1",
+
+  "standard": "dvbs",
+  "polarization": "V",
+  "modulation": "QPSK",
+  "speed": "1/2",
+
+  "Stand": "dvbs2",
+  "Pol": "L",
+  "Mod": "8-PSK",
+  "Sp": "1/3",
+
+  "latitude": "55.75",
+  "longitude": "37.6",
+  "satelliteLongitude": "13.0",
+  "Width": "20.0",
+  "ksi": "9.0",
+  "Azimuth": "300.0",
+
+  "Hight": "1000.0",
+  "HeightSeaLevel": "135.0",
+
+  "Power": "2.0",
+  "frequency": "11.0",
+
+  "AntennaGain": "20.0",
+  "Einm": "44.0",
+  "L_fider": "2.5",
+  "P_pomexa": "2.0",
+  "L_pol": "3.0"
+}

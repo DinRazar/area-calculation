@@ -1,0 +1,20 @@
+sudo docker system prune -a --volumes
+sudo docker builder prune
+
+
+sudo docker build -t area-calculation .
+sudo docker run -it --rm -v "$(pwd)":/usr/share/node/app -p 3000:3000 --name area-app area-calculation
+sudo docker save -o area-calculation.tar area-calculation
+sudo docker load -i area-calculation.tar
+docker run -d -p 3000:3000 --restart=always --name area-calculation area-calculation
+
+sudo docker logs -f area-app
+
+
+sudo docker exec -it area-app ldd /usr/share/node/app/Map
+
+
+docker exec -it area-app /bin/bash
+cd /usr/share/node/app
+./Map
+ls -la *.json 

@@ -278,43 +278,96 @@ function createMergedPolygon(boundsArray, color) {
         ]);
     });
     return turf.union(turf.featureCollection(turfPolygons));
+
+
 }
+
+// // Загрузка координат
+// document.getElementById('show').addEventListener('click', async function() {
+//     try {
+//         const response = await fetch('http://localhost:3000/run-binary', {
+//             method: 'POST',
+//         });
+//         const result = await response.json();
+//         console.log('Результат:', result.output);
+//     } catch (error) {
+//         console.error('Ошибка:', error);
+//     }
+
+//     await Promise.all([
+//         loadCoordinates('main'),
+//         loadCoordinates('noise'),
+//         loadCoordinates('ellipse')
+//         // loadCoordinates('circle')
+//     ]);
+
+//     // Обработка всех типов полигонов
+//     for (const [type, config] of Object.entries(polygonLayers)) {
+//         if (config.currentLayer) {
+//             map.removeLayer(config.currentLayer);
+//             config.currentLayer = null;
+//         }
+//         if (config.storage.length > 0) {
+//             const merged = createMergedPolygon(config.storage, config.color);
+//             if (merged) {
+//                 config.currentLayer = L.geoJSON(merged, {
+//                     color: config.color,
+//                     weight: 1
+//                 }).addTo(map);
+//             }
+//         } else {
+//             console.log(`Нет данных для отображения полигонов типа ${type}`);
+//         }
+//     }
+// });
 
 // Загрузка координат
 document.getElementById('show').addEventListener('click', async function() {
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const showButton = document.getElementById('show');
+
     try {
+        // Показываем индикатор загрузки и блокируем кнопку
+        loadingIndicator.style.display = 'block';
+        showButton.disabled = true;
+
         const response = await fetch('http://localhost:3000/run-binary', {
             method: 'POST',
         });
         const result = await response.json();
         console.log('Результат:', result.output);
+
+        await Promise.all([
+            loadCoordinates('main'),
+            loadCoordinates('noise'),
+            loadCoordinates('ellipse')
+            // loadCoordinates('circle')
+        ]);
+
+        // Обработка всех типов полигонов
+        for (const [type, config] of Object.entries(polygonLayers)) {
+            if (config.currentLayer) {
+                map.removeLayer(config.currentLayer);
+                config.currentLayer = null;
+            }
+            if (config.storage.length > 0) {
+                const merged = createMergedPolygon(config.storage, config.color);
+                if (merged) {
+                    config.currentLayer = L.geoJSON(merged, {
+                        color: config.color,
+                        weight: 1
+                    }).addTo(map);
+                }
+            } else {
+                console.log(`Нет данных для отображения полигонов типа ${type}`);
+            }
+        }
     } catch (error) {
         console.error('Ошибка:', error);
-    }
-
-    await Promise.all([
-        loadCoordinates('main'),
-        loadCoordinates('noise'),
-        loadCoordinates('ellipse')
-        // loadCoordinates('circle')
-    ]);
-
-    // Обработка всех типов полигонов
-    for (const [type, config] of Object.entries(polygonLayers)) {
-        if (config.currentLayer) {
-            map.removeLayer(config.currentLayer);
-            config.currentLayer = null;
-        }
-        if (config.storage.length > 0) {
-            const merged = createMergedPolygon(config.storage, config.color);
-            if (merged) {
-                config.currentLayer = L.geoJSON(merged, {
-                    color: config.color,
-                    weight: 1
-                }).addTo(map);
-            }
-        } else {
-            console.log(`Нет данных для отображения полигонов типа ${type}`);
-        }
+        alert('Произошла ошибка при отрисовке зон');
+    } finally {
+        // Скрываем индикатор загрузки и разблокируем кнопку
+        loadingIndicator.style.display = 'none';
+        showButton.disabled = false;
     }
 });
