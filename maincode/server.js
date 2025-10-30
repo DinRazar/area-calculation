@@ -7,6 +7,10 @@ const path = require('path');
 const { spawn } = require('child_process');
 const { execFile } = require('child_process');
 const multer = require('multer');
+
+// const fs = require('fs').promises;
+const axios = require('axios');
+
 const app = express();
 const PORT = 3000;
 
@@ -146,6 +150,335 @@ app.post('/run-binary', (req, res) => {
         res.json({ output: stdout, error: stderr });
     });
 });
+
+// ААААААААААААААААААААААААААААААААААААААААААААААААААААААААА
+// Эндпоинт для скачивания тайлов только с CartoDB
+// app.post('/download-tiles', async(req, res) => {
+//     const { north, south, east, west, zoomLevels } = req.body;
+
+//     // Проверяем, что переданы уровни
+//     if (!zoomLevels || !Array.isArray(zoomLevels) || zoomLevels.length === 0) {
+//         return res.status(400).json({
+//             error: 'Не выбраны уровни масштабирования'
+//         });
+//     }
+
+//     // Проверяем допустимый диапазон масштабов
+//     for (const zoom of zoomLevels) {
+//         if (zoom < 8 || zoom > 14) {
+//             return res.status(400).json({
+//                 error: 'Уровень масштабирования должен быть от 8 до 14'
+//             });
+//         }
+//     }
+
+//     try {
+//         let totalDownloaded = 0;
+//         let totalSkipped = 0;
+//         let totalFailed = 0;
+//         const results = {};
+
+//         console.log(`Скачивание тайлов с CartoDB для уровней: ${zoomLevels.join(', ')}`);
+
+//         // Скачиваем для каждого выбранного уровня
+//         for (const zoom of zoomLevels) {
+//             console.log(`=== Начинаем скачивание уровня ${zoom} ===`);
+
+//             // Вычисляем диапазон тайлов для текущего уровня
+//             const topLeft = latLngToTile(north, west, zoom);
+//             const bottomRight = latLngToTile(south, east, zoom);
+
+//             const xMin = Math.min(topLeft.x, bottomRight.x);
+//             const xMax = Math.max(topLeft.x, bottomRight.x);
+//             const yMin = Math.min(topLeft.y, bottomRight.y);
+//             const yMax = Math.max(topLeft.y, bottomRight.y);
+
+//             const levelTotalTiles = (xMax - xMin + 1) * (yMax - yMin + 1);
+
+//             let levelDownloaded = 0;
+//             let levelSkipped = 0;
+//             let levelFailed = 0;
+
+//             console.log(`Уровень ${zoom}: ${levelTotalTiles} тайлов, X:${xMin}-${xMax}, Y:${yMin}-${yMax}`);
+
+//             // Создаем папку для масштаба если не существует
+//             const zoomDir = path.join(__dirname, 'data', 'Tiles', zoom.toString());
+//             await fs.mkdir(zoomDir, { recursive: true });
+
+//             // Скачиваем тайлы для текущего уровня
+//             for (let x = xMin; x <= xMax; x++) {
+//                 const xDir = path.join(zoomDir, x.toString());
+//                 await fs.mkdir(xDir, { recursive: true });
+
+//                 for (let y = yMin; y <= yMax; y++) {
+//                     const tilePath = path.join(xDir, `${y}.png`);
+
+//                     // Проверяем, существует ли уже тайл
+//                     try {
+//                         await fs.access(tilePath);
+//                         levelSkipped++;
+//                         continue;
+//                     } catch (error) {
+//                         // Тайл не существует, скачиваем
+//                     }
+
+//                     // URL CartoDB
+//                     const subdomains = ['a', 'b', 'c', 'd'];
+//                     const subdomain = subdomains[Math.floor(Math.random() * subdomains.length)];
+//                     const tileUrl = `https://${subdomain}.basemaps.cartocdn.com/light_all/${zoom}/${x}/${y}.png`;
+
+//                     try {
+//                         const response = await axios.get(tileUrl, {
+//                             responseType: 'arraybuffer',
+//                             timeout: 15000,
+//                             headers: {
+//                                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+//                                 'Accept': 'image/webp,image/apng,image/*,*/*;q=0.8',
+//                                 'Referer': 'https://carto.com/'
+//                             }
+//                         });
+
+//                         if (response.data && response.data.length > 500) {
+//                             await fs.writeFile(tilePath, response.data);
+//                             levelDownloaded++;
+//                         } else {
+//                             levelFailed++;
+//                         }
+
+//                     } catch (error) {
+//                         levelFailed++;
+//                     }
+
+//                     // Задержка между запросами
+//                     await new Promise(resolve => setTimeout(resolve, 200));
+//                 }
+//             }
+
+//             // Сохраняем результаты для уровня
+//             results[zoom] = {
+//                 downloaded: levelDownloaded,
+//                 skipped: levelSkipped,
+//                 failed: levelFailed,
+//                 total: levelTotalTiles
+//             };
+
+//             totalDownloaded += levelDownloaded;
+//             totalSkipped += levelSkipped;
+//             totalFailed += levelFailed;
+
+//             console.log(`Уровень ${zoom} завершен: ${levelDownloaded} скачано, ${levelSkipped} пропущено, ${levelFailed} ошибок`);
+//         }
+
+//         console.log(`Скачивание завершено! Всего: ${totalDownloaded} скачано, ${totalSkipped} пропущено, ${totalFailed} ошибок`);
+
+//         res.json({
+//             success: true,
+//             downloadedCount: totalDownloaded,
+//             skippedCount: totalSkipped,
+//             failedCount: totalFailed,
+//             zoomLevels: zoomLevels,
+//             results: results,
+//             message: `Скачано ${totalDownloaded} тайлов с CartoDB для уровней ${zoomLevels.join(', ')}`
+//         });
+
+//     } catch (error) {
+//         console.error('Ошибка при скачивании тайлов:', error);
+//         res.status(500).json({
+//             error: 'Ошибка при скачивании тайлов с CartoDB',
+//             details: error.message
+//         });
+//     }
+// });
+
+// Вспомогательная функция для создания директорий с промисами
+function mkdirAsync(path, options = {}) {
+    return new Promise((resolve, reject) => {
+        fs.mkdir(path, options, (err) => {
+            if (err && err.code !== 'EEXIST') reject(err);
+            else resolve();
+        });
+    });
+}
+
+// Вспомогательная функция для проверки существования файла с промисами
+function accessAsync(path) {
+    return new Promise((resolve, reject) => {
+        fs.access(path, (err) => {
+            if (err) reject(err);
+            else resolve();
+        });
+    });
+}
+
+// Вспомогательная функция для записи файла с промисами
+function writeFileAsync(path, data) {
+    return new Promise((resolve, reject) => {
+        fs.writeFile(path, data, (err) => {
+            if (err) reject(err);
+            else resolve();
+        });
+    });
+}
+
+// Эндпоинт для скачивания тайлов
+app.post('/download-tiles', async(req, res) => {
+    const { north, south, east, west, zoomLevels } = req.body;
+
+    // Проверяем, что переданы уровни
+    if (!zoomLevels || !Array.isArray(zoomLevels) || zoomLevels.length === 0) {
+        return res.status(400).json({
+            error: 'Не выбраны уровни масштабирования'
+        });
+    }
+
+    // Проверяем допустимый диапазон масштабов
+    for (const zoom of zoomLevels) {
+        if (zoom < 8 || zoom > 14) {
+            return res.status(400).json({
+                error: 'Уровень масштабирования должен быть от 8 до 14'
+            });
+        }
+    }
+
+    try {
+        let totalDownloaded = 0;
+        let totalSkipped = 0;
+        let totalFailed = 0;
+        const results = {};
+
+        console.log(`Скачивание тайлов с CartoDB для уровней: ${zoomLevels.join(', ')}`);
+
+        // Скачиваем для каждого выбранного уровня
+        for (const zoom of zoomLevels) {
+            console.log(`=== Начинаем скачивание уровня ${zoom} ===`);
+
+            // Вычисляем диапазон тайлов для текущего уровня
+            const topLeft = latLngToTile(north, west, zoom);
+            const bottomRight = latLngToTile(south, east, zoom);
+
+            const xMin = Math.min(topLeft.x, bottomRight.x);
+            const xMax = Math.max(topLeft.x, bottomRight.x);
+            const yMin = Math.min(topLeft.y, bottomRight.y);
+            const yMax = Math.max(topLeft.y, bottomRight.y);
+
+            const levelTotalTiles = (xMax - xMin + 1) * (yMax - yMin + 1);
+
+            let levelDownloaded = 0;
+            let levelSkipped = 0;
+            let levelFailed = 0;
+
+            console.log(`Уровень ${zoom}: ${levelTotalTiles} тайлов, X:${xMin}-${xMax}, Y:${yMin}-${yMax}`);
+
+            // Создаем папку для масштаба если не существует
+            const zoomDir = path.join(__dirname, 'data', 'Tiles', zoom.toString());
+            await mkdirAsync(zoomDir, { recursive: true });
+
+            // Скачиваем тайлы для текущего уровня
+            for (let x = xMin; x <= xMax; x++) {
+                const xDir = path.join(zoomDir, x.toString());
+                await mkdirAsync(xDir, { recursive: true });
+
+                for (let y = yMin; y <= yMax; y++) {
+                    const tilePath = path.join(xDir, `${y}.png`);
+
+                    // Проверяем, существует ли уже тайл
+                    try {
+                        await accessAsync(tilePath);
+                        levelSkipped++;
+                        continue;
+                    } catch (error) {
+                        // Тайл не существует, скачиваем
+                    }
+
+                    // URL CartoDB
+                    const subdomains = ['a', 'b', 'c', 'd'];
+                    const subdomain = subdomains[Math.floor(Math.random() * subdomains.length)];
+                    const tileUrl = `https://${subdomain}.basemaps.cartocdn.com/light_all/${zoom}/${x}/${y}.png`;
+
+                    try {
+                        const response = await axios.get(tileUrl, {
+                            responseType: 'arraybuffer',
+                            timeout: 15000,
+                            headers: {
+                                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                                'Accept': 'image/webp,image/apng,image/*,*/*;q=0.8',
+                                'Referer': 'https://carto.com/'
+                            }
+                        });
+
+                        if (response.data && response.data.length > 500) {
+                            await writeFileAsync(tilePath, response.data);
+                            levelDownloaded++;
+                            console.log(`✓ Уровень ${zoom}: скачан тайл ${x}/${y}`);
+                        } else {
+                            console.log(`✗ Уровень ${zoom}: пустой тайл ${x}/${y}`);
+                            levelFailed++;
+                        }
+
+                    } catch (error) {
+                        console.log(`✗ Уровень ${zoom}: ошибка загрузки ${x}/${y} - ${error.message}`);
+                        levelFailed++;
+                    }
+
+                    // Задержка между запросами
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
+            }
+
+            // Сохраняем результаты для уровня
+            results[zoom] = {
+                downloaded: levelDownloaded,
+                skipped: levelSkipped,
+                failed: levelFailed,
+                total: levelTotalTiles
+            };
+
+            totalDownloaded += levelDownloaded;
+            totalSkipped += levelSkipped;
+            totalFailed += levelFailed;
+
+            console.log(`Уровень ${zoom} завершен: ${levelDownloaded} скачано, ${levelSkipped} пропущено, ${levelFailed} ошибок`);
+        }
+
+        console.log(`Скачивание завершено! Всего: ${totalDownloaded} скачано, ${totalSkipped} пропущено, ${totalFailed} ошибок`);
+
+        res.json({
+            success: true,
+            downloadedCount: totalDownloaded,
+            skippedCount: totalSkipped,
+            failedCount: totalFailed,
+            zoomLevels: zoomLevels,
+            results: results,
+            message: `Скачано ${totalDownloaded} тайлов с CartoDB для уровней ${zoomLevels.join(', ')}`
+        });
+
+    } catch (error) {
+        console.error('Ошибка при скачивании тайлов:', error);
+        res.status(500).json({
+            error: 'Ошибка при скачивании тайлов с CartoDB',
+            details: error.message
+        });
+    }
+});
+
+// Вспомогательная функция для преобразования координат в тайлы
+function latLngToTile(lat, lng, zoom) {
+    const x = Math.floor((lng + 180) / 360 * Math.pow(2, zoom));
+    const y = Math.floor((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, zoom));
+    return { x, y };
+}
+
+// Добавляем маршрут для страницы скачивания
+app.get('/download', (req, res) => {
+    res.sendFile(path.join(__dirname, 'download.html'));
+});
+
+// // Добавляем маршрут для автоскачивания
+// app.get('/download', (_req, res) => {
+//     res.sendFile(path.join(__dirname, 'download-auto.html'));
+// });
+
+//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa
 
 // Открытие index.html по пути http://localhost:3000/
 app.get('/', (req, res) => {

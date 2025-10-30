@@ -428,7 +428,7 @@ document.addEventListener('DOMContentLoaded', () => {
             !selectedValues.Mod || !selectedValues.HeightSeaLevel || !selectedValues.ksi ||
             !selectedValues.Einm
         ) {
-            alert("Пожалуйста, заполните все обязательные поля.");
+            // alert("Пожалуйста, заполните все обязательные поля.");
             return; // Прерываем выполнение функции, если  поля не заполнены
         }
 
@@ -449,7 +449,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // (selectedValues.latitude <= -90 || selectedValues.latitude >= 90) ||
             // (selectedValues.longitude <= -180 || selectedValues.longitude >= 180)
         ) {
-            alert("Введены некоректные значения");
+            // alert("Введены некоректные значения");
             return; // Прерываем выполнение функции, если значения некорректны 
         }
         if (parseFloat(selectedValues.ksi) < 0.5 * (-parseFloat(selectedValues.Width))) {

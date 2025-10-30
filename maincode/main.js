@@ -52,6 +52,12 @@ document.getElementById('onlineBtn').addEventListener('click', function(event) {
     }
 });
 
+document.getElementById('downloadBtn').addEventListener('click', function() {
+    // Открываем страницу скачивания в новой вкладке
+    window.open('/download', '_blank');
+});
+
+
 let lastMarker; // переменная для маркера, создающегося по клику
 
 const inputLat = document.getElementById('inputLat');

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>area-calcuiation-download</title>
+    <link rel="stylesheet" href="./libs/dist/leaflet.css">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./download_style.css">
+</head>
+
+<body>
+    <div id="download-container">
+        <button class="back-button" onclick="window.close()">✕ Закрыть вкладку</button>
+        <h1>Cкачивание тайлов карты</h1>
+
+        <div class="download-controls">
+            <div class="instructions">
+                <strong>Как использовать:</strong><br> 1. Нажмите "Выделить область"<br> 2. Нарисуйте прямоугольник на карте<br> 3. Выберите уровни масштабирования<br> 4. Нажмите "Скачать тайлы"
+            </div>
+
+            <div class="form-group">
+                <label>Выделите область на карте:</label>
+                <div id="map"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="zoomLevels">Уровни масштабирования (8-14):</label>
+                <select id="zoomLevels" multiple size="7" style="height: 150px;">
+                    <option value="8" selected>8 - Область</option>
+                    <option value="9" selected>9 - Регион</option>
+                    <option value="10" selected>10 - Город</option>
+                    <option value="11" selected>11 - Район</option>
+                    <option value="12" selected>12 - Улицы</option>
+                    <option value="13" selected>13 - Детали</option>
+                    <option value="14" selected>14 - Максимальная детализация</option>
+                </select>
+                <small>Удерживайте Ctrl для выбора нескольких уровней</small>
+            </div>
+
+            <div class="tile-info" id="tileInfo">
+                Выделите область на карте для расчета количества тайлов...
+            </div>
+
+            <div>
+                <button id="drawRectBtn">Выделить область</button>
+                <button id="downloadTilesBtn" disabled>Скачать тайлы</button>
+                <button id="clearSelectionBtn">Очистить выделение</button>
+                <button id="selectAllLevels">Выбрать все уровни</button>
+                <button id="deselectAllLevels">Очистить выбор</button>
+            </div>
+
+            <progress id="progress" value="0" max="100" style="display: none;"></progress>
+            <div id="status"></div>
+        </div>
+    </div>
+
+    <script src="./libs/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css">
+    <script src="./download.js"></script>
+</body>
+
+</html>
