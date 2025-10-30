@@ -225,13 +225,16 @@ document.addEventListener('DOMContentLoaded', () => {
             // inputFrec.value = data.frequency;
             // inputFrec1.value = data.frequency1;
 
+            inputFrec.value = '';
+            inputFrec1.value = '';
+
             // Установим долготу спутника
-            satelliteLongitude = data.satelliteLongitude;
-            // Загрузка данных о спутниках (например, из вашего другого JSON файла)
-            dataDropdown.addEventListener('change', (event) => {
-                const selectedOption = event.target.selectedOptions[0];
-                satelliteLongitude = selectedOption.dataset.longitude; // Обновление долготы спутника
-            });
+            // satelliteLongitude = data.satelliteLongitude;
+            // // Загрузка данных о спутниках (например, из вашего другого JSON файла)
+            // dataDropdown.addEventListener('change', (event) => {
+            //     const selectedOption = event.target.selectedOptions[0];
+            //     satelliteLongitude = selectedOption.dataset.longitude; // Обновление долготы спутника
+            // });
 
             // Обновление стандартов и скорости на основе данных
             updateSpeedAndModulation(data.standard);
@@ -428,7 +431,7 @@ document.addEventListener('DOMContentLoaded', () => {
             !selectedValues.Mod || !selectedValues.HeightSeaLevel || !selectedValues.ksi ||
             !selectedValues.Einm
         ) {
-            // alert("Пожалуйста, заполните все обязательные поля.");
+            alert("Пожалуйста, заполните все обязательные поля.");
             return; // Прерываем выполнение функции, если  поля не заполнены
         }
 
@@ -449,7 +452,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // (selectedValues.latitude <= -90 || selectedValues.latitude >= 90) ||
             // (selectedValues.longitude <= -180 || selectedValues.longitude >= 180)
         ) {
-            // alert("Введены некоректные значения");
+            alert("Введены некоректные значения");
             return; // Прерываем выполнение функции, если значения некорректны 
         }
         if (parseFloat(selectedValues.ksi) < 0.5 * (-parseFloat(selectedValues.Width))) {
