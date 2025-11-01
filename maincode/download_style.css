@@ -92,17 +92,19 @@ button:disabled {
     background: #545b62;
 }
 
-.tile-info {
+
+/* .tile-info {
     background: #e9ecef;
     padding: 10px;
     border-radius: 4px;
     margin: 10px 0;
-}
+} */
 
-.instructions {
+
+/* .instructions {
     background: #e7f3ff;
     padding: 10px;
     border-radius: 4px;
     margin-bottom: 10px;
     border-left: 4px solid #007cba;
-}
+} */

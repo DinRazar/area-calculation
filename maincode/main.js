@@ -52,8 +52,13 @@ document.getElementById('onlineBtn').addEventListener('click', function(event) {
     }
 });
 
-document.getElementById('downloadBtn').addEventListener('click', function() {
-    // Открываем страницу скачивания в новой вкладке
+// document.getElementById('downloadBtn').addEventListener('click', function() {
+//     // Открываем страницу скачивания в новой вкладке
+//     window.open('/download', '_blank');
+// });
+
+document.getElementById('downloadBtn').addEventListener('click', function(e) {
+    e.stopPropagation();
     window.open('/download', '_blank');
 });
 

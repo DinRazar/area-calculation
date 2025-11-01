@@ -201,6 +201,10 @@ html {
     background-color: #e0e0e0;
 }
 
+#downloadBtn {
+    pointer-events: auto;
+}
+
 
 /* Специфичные стили для кнопки линейки */
 
